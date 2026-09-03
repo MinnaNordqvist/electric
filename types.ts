@@ -27,7 +27,7 @@ export async function selectAll(){
   }
 }
 
-async function selectSpecial(){
+export async function selectSpecial(){
   const query = `
   WITH negative_hours AS (
     SELECT 
@@ -127,6 +127,6 @@ async function getDailyAveragePrice(){
 //await getTotalDailyProduction()
 //await getTotalDailyConsumption()
 //await getConsecutiveNeg()
-await selectSpecial();
+//await selectSpecial();
 //await getNegprice();
 //await selectAll();
