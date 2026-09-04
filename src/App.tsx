@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import "./App.css"
 
 
 export function App() {
@@ -13,9 +14,10 @@ export function App() {
     }, []);
   
   return(
-    <div>
+    <div className="header">
      <h1>Electricity Dashboard</h1>
      <p>Data rows loaded: {data.length}</p>
+     
     </div>
   )
  
