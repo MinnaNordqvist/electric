@@ -24,7 +24,7 @@ const [data, setData] = useState<any[]>([]);
     return(
         <>
         <div className="table-wrapper">
-        <table className="stats-table">
+        <table className="dataTable">
           <thead>
             <tr>
               <th>Date</th>

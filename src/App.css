@@ -13,3 +13,25 @@
     height: 48px;
   }
 }
+
+.table-wrapper {
+    
+    border: 1px solid  #aa3bff;
+    border-radius: 8px;
+}
+
+.dataTable {
+    width: 100%;
+    text-align: left;
+}
+.dataTable th, 
+.dataTable td {
+  padding: 0.875rem 1.25rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.dataTable th {
+  background-color: #f1f5f9;
+  font-weight: 600;
+  color: #334155;
+}
