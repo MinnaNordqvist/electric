@@ -66,12 +66,14 @@ export function DataTable(){
         </table>
         <div className="pagination-container">
          <button
+            className="btn-nav"
             onClick={() => setCurrentPage(1)}
             disabled={currentPage === 1}>
             &laquo;&laquo; First
         </button>
 
          <button 
+            className="btn-nav"
             onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
             disabled={currentPage === 1}>
             &laquo; Prev
@@ -82,7 +84,8 @@ export function DataTable(){
          {pageNumbers.map((number) => (
           <button
             key={number}
-            onClick={() => setCurrentPage(number)}>
+            onClick={() => setCurrentPage(number)}
+            className={`btn-page ${number === currentPage ? "active" : ""}`}>
                 {number}
             </button>   
           ))}  
@@ -90,12 +93,14 @@ export function DataTable(){
         {endPage < totalPages && <span className="pagination-ellipsis">...</span>}
           
          <button
+            className="btn-nav"
             onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
             disabled={currentPage === totalPages}>
             Next &raquo;
         </button>    
         
         <button
+            className="btn-nav"
             onClick={() => setCurrentPage(totalPages)}
             disabled={currentPage === totalPages}>
             Last &raquo;&raquo;

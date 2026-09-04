@@ -35,3 +35,43 @@
   font-weight: 600;
   color: #334155;
 }
+
+.pagination-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pagination-ellipsis {
+  padding: 0 4px;
+  color: #64748b;
+}
+
+.btn-nav,
+.btn-page {
+  padding: 8px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  background-color: #fff;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: all 0.15s ease;
+}
+
+.btn-page.active {
+  border-color: #2563eb;
+  background-color: #2563eb;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.btn-nav:hover:not(:disabled),
+.btn-page:hover:not(.active) {
+  background-color: #f8fafc;
+  border-color: #94a3b8;
+}
+
+.btn-nav:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}

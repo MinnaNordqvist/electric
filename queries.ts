@@ -60,7 +60,7 @@ export async function selectSpecial(){
   FROM electricitydata e
   LEFT JOIN max_streaks ms ON DATE(e.date) = ms.streak_date
   GROUP BY DATE(e.date)
-  ORDER BY date DESC
+  ORDER BY date ASC
 `;
      try {
     const result = await pool.query(query);
