@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css"
-
+import { DataTable } from "./DataTable";
 
 export function App() {
   const [data, setData] = useState<any[]>([]);  
@@ -20,6 +20,9 @@ export function App() {
     <h1>Electricity Dashboard</h1>
     <p>Data rows loaded: {data.length}</p>
     </div>
+    
+    <DataTable />
+
     <section id="spacer"></section>
     <div className="footer">
       <p>Data source: Fingrid and porssisahko.net </p>
