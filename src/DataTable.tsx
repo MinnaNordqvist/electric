@@ -1,11 +1,23 @@
 import { useEffect, useState, useMemo } from "react";
 
+interface Electric {
+  date: string;
+  hours: number;
+  total_production: number;
+  total_consumption: number;
+  average_price: number;
+  longest_consecutive_negative_hours: number;
+}
+
+type SortField = keyof Electric;
+type SortDirection = "asc" | "desc";
 
 export function DataTable(){
     const [data, setData] = useState<any[]>([]);  
     const [currentPage, setCurrentPage] = useState<number>(1);
     const pageSize = 10;
-
+    const [sortField, setSortField] = useState<SortField>("date");
+    const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
 
     useEffect(() => {
          fetch('/api')
@@ -15,12 +27,39 @@ export function DataTable(){
         });
     }, []);
 
-    const totalPages = Math.ceil(data.length / pageSize)
+    const handleSort = (field: SortField) => {
+        if (sortField === field) {
+            setSortDirection((prev) => (prev === "asc" ? "desc" : "asc"));
+        } else {
+            setSortField(field);
+            setSortDirection("asc");
+        }
+        setCurrentPage(1); 
+    };
+
+    const sortedData = useMemo(() => {
+        return [...data].sort((a, b) => {
+            const valA = a[sortField];
+            const valB = b[sortField];
+            
+            if (typeof valA === "number" && typeof valB === "number") {
+                return sortDirection === "asc" ? valA - valB : valB - valA;
+            }
+            
+            const strA = String(valA);
+            const strB = String(valB);
+            return sortDirection === "asc" 
+                ? strA.localeCompare(strB) 
+                : strB.localeCompare(strA);
+        });
+    }, [data, sortField, sortDirection]);
+
+    const totalPages = Math.ceil(sortedData.length / pageSize)
     
     const currentTableData = useMemo(() => {
         const startIndex = (currentPage - 1) * pageSize;
-        return data.slice(startIndex, startIndex + pageSize);
-    }, [data, currentPage]);
+        return sortedData.slice(startIndex, startIndex + pageSize);
+    }, [sortedData, currentPage]);
 
     const maxVisible = 5;
     let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
@@ -36,7 +75,16 @@ export function DataTable(){
         (_, i) => startPage + i
     );
 
-
+    const renderSortArrow = (field: SortField) => {
+        if (sortField !== field) {
+            return <span className="sort-indicator inactive">↕</span>;
+        }
+        return (
+            <span className="sort-indicator">
+                {sortDirection === "asc" ? "▲" : "▼"}
+            </span>
+        );
+    };
 
 
     return(
@@ -45,11 +93,11 @@ export function DataTable(){
         <table className="dataTable">
           <thead>
             <tr>
-              <th>Date</th>
-              <th>Total Production (MWh/h)</th>
-              <th>Total Consumption (kWh)</th>
-              <th>Avgerage Daily Price (snt/kWh)</th>
-              <th>Longest Negative Price Streak (h)</th>
+              <th className="sortable" onClick={() => handleSort("date")} >Date {renderSortArrow("date")}</th>
+              <th className="sortable">Total Production (MWh/h)</th>
+              <th className="sortable">Total Consumption (kWh)</th>
+              <th className="sortable">Avgerage Daily Price (snt/kWh)</th>
+              <th className="sortable">Longest Negative Price Streak (h)</th>
             </tr>
           </thead>
           <tbody>
