@@ -18,7 +18,9 @@ export function DataTable(){
     const pageSize = 10;
     const [sortField, setSortField] = useState<SortField>("date");
     const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
+    const [selectedDate, setSelectedDate] = useState<string>("");
 
+    // Fetch data from backend
     useEffect(() => {
          fetch('/api')
         .then((res) => res.json())
@@ -27,6 +29,7 @@ export function DataTable(){
         });
     }, []);
 
+    // Sort by column
     const handleSort = (field: SortField) => {
         if (sortField === field) {
             setSortDirection((prev) => (prev === "asc" ? "desc" : "asc"));
@@ -37,8 +40,16 @@ export function DataTable(){
         setCurrentPage(1); 
     };
 
+     // Filter by date
+    const filteredData = useMemo(() => {
+        if (!selectedDate) return data;
+        return data.filter((row) => row.date === selectedDate);
+    }, [data, selectedDate]);
+    
     const sortedData = useMemo(() => {
-        return [...data].sort((a, b) => {
+        if (filteredData.length <= 1) return filteredData;
+        
+        return [...filteredData].sort((a, b) => {
             if (sortField === "date") {
                 return sortDirection === "asc" 
                 ? String(a.date).localeCompare(String(b.date))
@@ -59,8 +70,24 @@ export function DataTable(){
             return sortDirection === "asc" ? numA - numB : numB - numA;
         
         });
-    }, [data, sortField, sortDirection]);
+    }, [filteredData, sortField, sortDirection]);
+     
+    const renderSortArrow = (field: SortField) => {
+        if (sortField !== field) {
+            return <span className="sort-indicator inactive">↕</span>;
+        }
+        return (
+            <span className="sort-indicator">
+                {sortDirection === "asc" ? "▲" : "▼"}
+            </span>
+        );
+    };
 
+   
+
+
+
+    // Pagination
     const totalPages = Math.ceil(sortedData.length / pageSize)
     
     const currentTableData = useMemo(() => {
@@ -82,21 +109,39 @@ export function DataTable(){
         (_, i) => startPage + i
     );
 
-    const renderSortArrow = (field: SortField) => {
-        if (sortField !== field) {
-            return <span className="sort-indicator inactive">↕</span>;
-        }
-        return (
-            <span className="sort-indicator">
-                {sortDirection === "asc" ? "▲" : "▼"}
-            </span>
-        );
-    };
-
+   
 
     return(
         <>
         <div className="table-wrapper">
+        <div className="filter-bar">
+        <label htmlFor="date-filter">Filter by Date:</label>
+        <input
+          id="date-filter"
+          type="date"
+          className="date-picker-input"
+          value={selectedDate}
+          onChange={(e) => {
+            const val = e.target.value;
+            if (val === "" || val.length === 10) {
+                setSelectedDate(val);
+                setCurrentPage(1);
+            }
+          }}
+        />
+        {selectedDate && (
+          <button
+            className="btn-clear-filter"
+            onClick={() => {
+              setSelectedDate("");
+              setCurrentPage(1);
+            }}
+          >
+            Clear Filter
+          </button>
+        )}
+      </div>
+       
         <table className="dataTable">
           <thead>
             <tr>
