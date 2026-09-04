@@ -22,21 +22,30 @@
 
 .dataTable {
     width: 100%;
-    text-align: left;
+   
+    table-layout: fixed;
 }
 .dataTable th, 
 .dataTable td {
-  padding: 0.875rem 1.25rem;
-  border-bottom: 1px solid #e2e8f0;
+   padding: 12px 10px;
+   border-bottom: 1px solid #e2e8f0;
+   white-space: pre;
+   hyphens: auto;
 }
 
 .dataTable th {
   background-color: #f1f5f9;
-  font-weight: 600;
+  font-weight: 100;
   color: #334155;
+  text-align: center;
+  font-size: 0.875rem;
 }
 
-.data-table th.sortable {
+.dataTable td {
+  font-size: 0.9rem;
+}
+
+.dataTable th.sortable {
   cursor: pointer;
   user-select: none;
   transition: background-color 0.15s ease;
