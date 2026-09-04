@@ -39,18 +39,25 @@ export function DataTable(){
 
     const sortedData = useMemo(() => {
         return [...data].sort((a, b) => {
-            const valA = a[sortField];
-            const valB = b[sortField];
-            
-            if (typeof valA === "number" && typeof valB === "number") {
-                return sortDirection === "asc" ? valA - valB : valB - valA;
+            if (sortField === "date") {
+                return sortDirection === "asc" 
+                ? String(a.date).localeCompare(String(b.date))
+                : String(b.date).localeCompare(String(a.date));
             }
             
-            const strA = String(valA);
-            const strB = String(valB);
-            return sortDirection === "asc" 
-                ? strA.localeCompare(strB) 
-                : strB.localeCompare(strA);
+            const parseNum = (val: any) => {
+                if (typeof val === "number") return val;
+                if (!val) return 0;
+            
+                const num = Number(String(val).replace(",", "."));
+                return isNaN(num) ? 0 : num;
+            };
+            
+            const numA = parseNum(a[sortField]);
+            const numB = parseNum(b[sortField]);
+
+            return sortDirection === "asc" ? numA - numB : numB - numA;
+        
         });
     }, [data, sortField, sortDirection]);
 
@@ -93,11 +100,11 @@ export function DataTable(){
         <table className="dataTable">
           <thead>
             <tr>
-              <th className="sortable" onClick={() => handleSort("date")} >Date {renderSortArrow("date")}</th>
-              <th className="sortable">Total Production (MWh/h)</th>
-              <th className="sortable">Total Consumption (kWh)</th>
-              <th className="sortable">Avgerage Daily Price (snt/kWh)</th>
-              <th className="sortable">Longest Negative Price Streak (h)</th>
+              <th className="sortable" onClick={() => handleSort("date")} >Date    {renderSortArrow("date")}</th>
+              <th className="sortable" onClick={() => handleSort("total_production")} >Total Production (MWh/h) {renderSortArrow("total_production")}</th>
+              <th className="sortable" onClick={() => handleSort("total_consumption")} >Total Consumption (kWh) {renderSortArrow("total_consumption")}</th>
+              <th className="sortable" onClick={() => handleSort("average_price")}>Avgerage Daily Price (snt/kWh) {renderSortArrow("average_price")}</th>
+              <th className="sortable" onClick={() => handleSort("longest_consecutive_negative_hours")}>Longest Negative Price Streak (h) {renderSortArrow("longest_consecutive_negative_hours")}</th>
             </tr>
           </thead>
           <tbody>
