@@ -22,7 +22,20 @@ export function DataTable(){
         return data.slice(startIndex, startIndex + pageSize);
     }, [data, currentPage]);
 
-    const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
+    const maxVisible = 5;
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+    let endPage = startPage + maxVisible - 1;
+
+    if (endPage > totalPages) {
+        endPage = totalPages;
+        startPage = Math.max(1, endPage - maxVisible + 1);
+    }
+    
+    const pageNumbers = Array.from(
+        { length: endPage - startPage + 1 },
+        (_, i) => startPage + i
+    );
+
 
 
 
@@ -51,18 +64,43 @@ export function DataTable(){
             ))}
           </tbody>
         </table>
+        <div className="pagination-container">
+         <button
+            onClick={() => setCurrentPage(1)}
+            disabled={currentPage === 1}>
+            &laquo;&laquo; First
+        </button>
+
          <button 
             onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
             disabled={currentPage === 1}>
             &laquo; Prev
         </button>   
-        <button
-          onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-          disabled={currentPage === totalPages}>
+       
+        {startPage > 1 && <span className="pagination-ellipsis">...</span>}        
+
+         {pageNumbers.map((number) => (
+          <button
+            key={number}
+            onClick={() => setCurrentPage(number)}>
+                {number}
+            </button>   
+          ))}  
+
+        {endPage < totalPages && <span className="pagination-ellipsis">...</span>}
+          
+         <button
+            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+            disabled={currentPage === totalPages}>
             Next &raquo;
         </button>    
-
-
+        
+        <button
+            onClick={() => setCurrentPage(totalPages)}
+            disabled={currentPage === totalPages}>
+            Last &raquo;&raquo;
+        </button> 
+        </div>    
 
         </div>
         </>
