@@ -1,8 +1,5 @@
 import pool from './connection.js'
 
-let helloWorld = "Hello World";
-
-console.log(helloWorld);
 
 async function getNegprice() {
   const query = 'SELECT date::text AS date, hourlyprice FROM electricitydata WHERE hourlyprice < 0';
@@ -64,7 +61,7 @@ export async function selectSpecial(){
 `;
      try {
     const result = await pool.query(query);
-    console.log(result.rows);
+    //console.log(result.rows);
     return result.rows;
   } catch (error) {
     console.error('Error executing query:', error);

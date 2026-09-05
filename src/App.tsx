@@ -10,6 +10,7 @@ export function App() {
     
     <div className="header">
     <h1>Electricity Dashboard</h1>
+    <p>31.12.2020 - 1.10.2024</p><br/>
   
     </div>
     

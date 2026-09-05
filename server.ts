@@ -1,5 +1,5 @@
 import express from 'express';
-import { selectAll, selectSpecial } from './queries.js';
+import { selectSpecial } from './queries.js';
 
 const app = express();
 const PORT = 3000;

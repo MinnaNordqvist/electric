@@ -115,7 +115,7 @@ export function DataTable(){
         <>
         <div className="table-wrapper">
         <div className="filter-bar">
-        <label htmlFor="date-filter">Filter by Date:</label>
+        <label htmlFor="date-filter">Search Date:</label>
         <input
           id="date-filter"
           type="date"
@@ -137,7 +137,7 @@ export function DataTable(){
               setCurrentPage(1);
             }}
           >
-            Clear Filter
+            Clear Date
           </button>
         )}
       </div>
