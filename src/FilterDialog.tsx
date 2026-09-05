@@ -97,7 +97,51 @@ export function FilterDialog({ isOpen, onClose, activeFilters, onApply, data }: 
                 ))}
               </select>
             </div>
-          
+
+        <div className="form-group">
+            <label htmlFor="filter-min-production">Min Production (MWh/h):</label>  
+             <input
+              id="filter-min-production"
+              type="number"
+              step="0.1"
+              value={draft.minProduction ?? ""}
+              onChange={(e) => setDraft({ ...draft, minProduction: e.target.value === "" ? "" : Number(e.target.value) })}
+            />  
+        </div>        
+
+        <div className="form-group">
+            <label htmlFor="filter-max-production">Max Production (MWh/h):</label>
+            <input
+              id="filter-max-production"
+              type="number"
+              step="0.1"
+              value={draft.maxProduction ?? ""}
+              onChange={(e) => setDraft({ ...draft, maxProduction: e.target.value === "" ? "" : Number(e.target.value) })}
+            />  
+        </div>        
+
+        <div className="form-group">
+            <label htmlFor="filter-min-consumption">Min Consumption (kWh):</label>
+            <input
+              id="filter-min-consumption"
+              type="number"
+              step="0.1"
+              value={draft.minConsumption ?? ""}
+              onChange={(e) => setDraft({ ...draft, minConsumption: e.target.value === "" ? "" : Number(e.target.value) })}
+            />      
+        </div>        
+
+        <div className="form-group">
+            <label htmlFor="filter-max-consumption">Max Consumption (kWh):</label>
+            <input
+              id="filter-max-consumption"
+              type="number"
+              step="0.1"
+              value={draft.maxConsumption ?? ""}
+              onChange={(e) => setDraft({ ...draft, maxConsumption: e.target.value === "" ? "" : Number(e.target.value) })}
+            />  
+        </div>                
+
 
         <div className="form-group">
             <label htmlFor="filter-min-price">Min Price (snt/kWh):</label>
@@ -121,6 +165,27 @@ export function FilterDialog({ isOpen, onClose, activeFilters, onApply, data }: 
             />
         </div>        
 
+        <div className="form-group">
+           <label htmlFor="filter-min-streak">Min consecutive negative hours</label>
+           <input
+              id="filter-min-streak"
+              type="number"
+              step="1"
+              value={draft.minStreak ?? ""}
+              onChange={(e) => setDraft({ ...draft, minStreak: e.target.value === "" ? "" : Number(e.target.value) })}
+            />
+        </div>        
+
+         <div className="form-group">
+           <label htmlFor="filter-max-streak">Max consecutive negative hours</label>
+           <input
+              id="filter-max-streak"
+              type="number"
+              step="1"
+              value={draft.maxStreak ?? ""}
+              onChange={(e) => setDraft({ ...draft, maxStreak: e.target.value === "" ? "" : Number(e.target.value) })}
+            />
+        </div>   
 
 
         <div className="modal-footer">

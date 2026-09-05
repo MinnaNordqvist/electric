@@ -3,7 +3,6 @@ import { FilterDialog, FilterCriteria } from "./FilterDialog";
 
 interface Electric {
   date: string;
-  hours: number;
   total_production: number;
   total_consumption: number;
   average_price: number;
@@ -82,15 +81,34 @@ export function DataTable(){
         }
       }
 
+      if (filters.minProduction !== "" && filters.minProduction !== undefined && row.total_production < filters.minProduction) {
+        return false;
+      }
+      if (filters.maxProduction !== "" && filters.maxProduction !== undefined && row.total_production > filters.maxProduction) {
+        return false;
+      }
+
+      if (filters.minConsumption !== "" && filters.minConsumption !== undefined && row.total_consumption < filters.minConsumption) {
+        return false;
+      }
+      if (filters.maxConsumption !== "" && filters.maxConsumption !== undefined && row.total_consumption > filters.maxConsumption) {
+        return false;
+      }
+
       if (filters.minPrice !== "" && filters.minPrice !== undefined && row.average_price < filters.minPrice) {
         return false;
       }
       if (filters.maxPrice !== "" && filters.maxPrice !== undefined && row.average_price > filters.maxPrice) {
         return false;
       }
+
       if (filters.minStreak !== "" && filters.minStreak !== undefined && row.longest_consecutive_negative_hours < filters.minStreak) {
         return false;
       }
+      if (filters.maxStreak !== "" && filters.maxStreak !== undefined && row.longest_consecutive_negative_hours > filters.maxStreak) {
+        return false;
+      }
+
 
       return true;
     });
@@ -174,35 +192,7 @@ export function DataTable(){
     return(
         <>
         <div className="table-wrapper">
-        <div className="filter-bar">
-        <label htmlFor="date-filter">Select Date:</label>
-        <input
-          id="date-filter"
-          type="date"
-          className="date-picker-input"
-          min={minDate}
-          max={maxDate}
-          value={selectedDate}
-          onChange={(e) => {
-            const val = e.target.value;
-            if (val === "" || val.length === 10) {
-                setSelectedDate(val);
-                setCurrentPage(1);
-            }
-          }}
-        />
-        {selectedDate && (
-          <button
-            className="btn-clear-filter"
-            onClick={() => {
-              setSelectedDate("");
-              setCurrentPage(1);
-            }}
-          >
-            Clear Date
-          </button>
-        )}
-      </div>
+        
       <div className="table-controls">
         <button
           className={`btn-filter-trigger ${hasActiveFilters ? "active" : ""}`}
@@ -237,7 +227,35 @@ export function DataTable(){
                 setCurrentPage(1); 
             }}
         />
-       
+       <div className="filter-bar">
+        <label htmlFor="date-filter">Select Date:</label>
+        <input
+          id="date-filter"
+          type="date"
+          className="date-picker-input"
+          min={minDate}
+          max={maxDate}
+          value={selectedDate}
+          onChange={(e) => {
+            const val = e.target.value;
+            if (val === "" || val.length === 10) {
+                setSelectedDate(val);
+                setCurrentPage(1);
+            }
+          }}
+        />
+        {selectedDate && (
+          <button
+            className="btn-clear-filter"
+            onClick={() => {
+              setSelectedDate("");
+              setCurrentPage(1);
+            }}
+          >
+            Clear Date
+          </button>
+        )}
+      </div>
         <table className="dataTable">
           <thead>
             <tr>
