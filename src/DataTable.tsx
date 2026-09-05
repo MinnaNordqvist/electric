@@ -19,6 +19,7 @@ export function DataTable(){
     const [sortField, setSortField] = useState<SortField>("date");
     const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
     const [selectedDate, setSelectedDate] = useState<string>("");
+    
 
     // Fetch data from backend
     useEffect(() => {
@@ -28,6 +29,35 @@ export function DataTable(){
             setData([...resData]); 
         });
     }, []);
+
+    // Set start and end dates
+    const { minDate, maxDate } = useMemo(() => {
+        if (!data.length) return { minDate: "", maxDate: "" };
+
+        let min = data[0].date;
+        let max = data[0].date;
+
+        for (const row of data) {
+            if (row.date < min) min = row.date;
+            if (row.date > max) max = row.date;
+        }
+
+        return {
+            minDate: min,
+            maxDate: max,
+        };
+    }, [data]);
+
+
+
+   
+    // Filter by date
+    const filteredData = useMemo(() => {
+        if (!selectedDate) return data;
+        return data.filter((row) => row.date === selectedDate);
+    }, [data, selectedDate]);
+   
+
 
     // Sort by column
     const handleSort = (field: SortField) => {
@@ -40,12 +70,6 @@ export function DataTable(){
         setCurrentPage(1); 
     };
 
-     // Filter by date
-    const filteredData = useMemo(() => {
-        if (!selectedDate) return data;
-        return data.filter((row) => row.date === selectedDate);
-    }, [data, selectedDate]);
-    
     const sortedData = useMemo(() => {
         if (filteredData.length <= 1) return filteredData;
         
@@ -71,7 +95,8 @@ export function DataTable(){
         
         });
     }, [filteredData, sortField, sortDirection]);
-     
+
+    
     const renderSortArrow = (field: SortField) => {
         if (sortField !== field) {
             return <span className="sort-indicator inactive">↕</span>;
@@ -84,9 +109,6 @@ export function DataTable(){
     };
 
    
-
-
-
     // Pagination
     const totalPages = Math.ceil(sortedData.length / pageSize)
     
@@ -115,13 +137,13 @@ export function DataTable(){
         <>
         <div className="table-wrapper">
         <div className="filter-bar">
-        <label htmlFor="date-filter">Search Date:</label>
+        <label htmlFor="date-filter">Select Date:</label>
         <input
           id="date-filter"
           type="date"
           className="date-picker-input"
-          min="2020-12-31"
-          max="2024-10-01"
+          min={minDate}
+          max={maxDate}
           value={selectedDate}
           onChange={(e) => {
             const val = e.target.value;
@@ -171,14 +193,14 @@ export function DataTable(){
             className="btn-nav"
             onClick={() => setCurrentPage(1)}
             disabled={currentPage === 1}>
-            &laquo;&laquo; First
+            &laquo; First
         </button>
 
          <button 
             className="btn-nav"
             onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
             disabled={currentPage === 1}>
-            &laquo; Prev
+             Prev
         </button>   
        
         {startPage > 1 && <span className="pagination-ellipsis">...</span>}        
@@ -198,14 +220,14 @@ export function DataTable(){
             className="btn-nav"
             onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
             disabled={currentPage === totalPages}>
-            Next &raquo;
+            Next 
         </button>    
         
         <button
             className="btn-nav"
             onClick={() => setCurrentPage(totalPages)}
             disabled={currentPage === totalPages}>
-            Last &raquo;&raquo;
+            Last &raquo;
         </button> 
         </div>    
 
