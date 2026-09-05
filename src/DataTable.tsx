@@ -120,6 +120,8 @@ export function DataTable(){
           id="date-filter"
           type="date"
           className="date-picker-input"
+          min="2020-12-31"
+          max="2024-10-01"
           value={selectedDate}
           onChange={(e) => {
             const val = e.target.value;
