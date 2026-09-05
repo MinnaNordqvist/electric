@@ -1,4 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
+import { FilterDialog, FilterCriteria } from "./FilterDialog";
 
 interface Electric {
   date: string;
@@ -12,6 +13,10 @@ interface Electric {
 type SortField = keyof Electric;
 type SortDirection = "asc" | "desc";
 
+
+
+
+
 export function DataTable(){
     const [data, setData] = useState<any[]>([]);  
     const [currentPage, setCurrentPage] = useState<number>(1);
@@ -19,7 +24,8 @@ export function DataTable(){
     const [sortField, setSortField] = useState<SortField>("date");
     const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
     const [selectedDate, setSelectedDate] = useState<string>("");
-    
+    const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
+    const [filters, setFilters] = useState<FilterCriteria>({});
 
     // Fetch data from backend
     useEffect(() => {
@@ -51,14 +57,46 @@ export function DataTable(){
 
 
    
-    // Filter by date
-    const filteredData = useMemo(() => {
+    // Search date
+    const filteredDate = useMemo(() => {
         if (!selectedDate) return data;
         return data.filter((row) => row.date === selectedDate);
     }, [data, selectedDate]);
    
 
 
+    // Filter dialog
+    const filteredData = useMemo(() =>{
+        return data.filter((row) => {
+      
+      if (filters.year && !row.date.startsWith(filters.year)) {
+        return false;
+      }
+
+    
+      if (filters.month) {
+        if (filters.year) {
+          if (!row.date.startsWith(`${filters.year}-${filters.month}`)) return false;
+        } else if (row.date.slice(5, 7) !== filters.month) {
+          return false;
+        }
+      }
+
+      if (filters.minPrice !== "" && filters.minPrice !== undefined && row.average_price < filters.minPrice) {
+        return false;
+      }
+      if (filters.maxPrice !== "" && filters.maxPrice !== undefined && row.average_price > filters.maxPrice) {
+        return false;
+      }
+      if (filters.minStreak !== "" && filters.minStreak !== undefined && row.longest_consecutive_negative_hours < filters.minStreak) {
+        return false;
+      }
+
+      return true;
+    });
+  }, [data, filters]);
+
+   
     // Sort by column
     const handleSort = (field: SortField) => {
         if (sortField === field) {
@@ -131,7 +169,7 @@ export function DataTable(){
         (_, i) => startPage + i
     );
 
-   
+   const hasActiveFilters = Object.values(filters).some((val) => val !== "" && val !== undefined);
 
     return(
         <>
@@ -165,6 +203,40 @@ export function DataTable(){
           </button>
         )}
       </div>
+      <div className="table-controls">
+        <button
+          className={`btn-filter-trigger ${hasActiveFilters ? "active" : ""}`}
+          onClick={() => setIsFilterOpen(true)}
+        >
+          🔍 {hasActiveFilters ? "Filters Applied" : "Filter Data"}
+        </button>
+
+        {hasActiveFilters && (
+          <button
+            className="btn-filter-trigger"
+            onClick={() => {
+              setFilters({});
+              setCurrentPage(1);
+            }}
+          >
+            Clear Filters
+          </button>
+        )}
+
+        <span className="record-count">
+          Showing {sortedData.length} of {data.length} records
+        </span>
+      </div>
+      <FilterDialog
+            isOpen={isFilterOpen}
+            onClose={() => setIsFilterOpen(false)}
+            activeFilters={filters}
+            data={data}
+            onApply={(newFilters) => {
+                setFilters(newFilters);
+                setCurrentPage(1); 
+            }}
+        />
        
         <table className="dataTable">
           <thead>
