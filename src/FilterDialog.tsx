@@ -103,6 +103,7 @@ export function FilterDialog({ isOpen, onClose, activeFilters, onApply, data }: 
              <input
               id="filter-min-production"
               type="number"
+              min="0"
               step="0.1"
               value={draft.minProduction ?? ""}
               onChange={(e) => setDraft({ ...draft, minProduction: e.target.value === "" ? "" : Number(e.target.value) })}
@@ -114,6 +115,7 @@ export function FilterDialog({ isOpen, onClose, activeFilters, onApply, data }: 
             <input
               id="filter-max-production"
               type="number"
+              min="0"
               step="0.1"
               value={draft.maxProduction ?? ""}
               onChange={(e) => setDraft({ ...draft, maxProduction: e.target.value === "" ? "" : Number(e.target.value) })}
@@ -125,6 +127,7 @@ export function FilterDialog({ isOpen, onClose, activeFilters, onApply, data }: 
             <input
               id="filter-min-consumption"
               type="number"
+              min="0"
               step="0.1"
               value={draft.minConsumption ?? ""}
               onChange={(e) => setDraft({ ...draft, minConsumption: e.target.value === "" ? "" : Number(e.target.value) })}
@@ -136,6 +139,7 @@ export function FilterDialog({ isOpen, onClose, activeFilters, onApply, data }: 
             <input
               id="filter-max-consumption"
               type="number"
+              min="0"
               step="0.1"
               value={draft.maxConsumption ?? ""}
               onChange={(e) => setDraft({ ...draft, maxConsumption: e.target.value === "" ? "" : Number(e.target.value) })}
@@ -170,6 +174,8 @@ export function FilterDialog({ isOpen, onClose, activeFilters, onApply, data }: 
            <input
               id="filter-min-streak"
               type="number"
+              min="0"
+              max="24"
               step="1"
               value={draft.minStreak ?? ""}
               onChange={(e) => setDraft({ ...draft, minStreak: e.target.value === "" ? "" : Number(e.target.value) })}
@@ -181,6 +187,8 @@ export function FilterDialog({ isOpen, onClose, activeFilters, onApply, data }: 
            <input
               id="filter-max-streak"
               type="number"
+              min="0"
+              max="24"
               step="1"
               value={draft.maxStreak ?? ""}
               onChange={(e) => setDraft({ ...draft, maxStreak: e.target.value === "" ? "" : Number(e.target.value) })}
