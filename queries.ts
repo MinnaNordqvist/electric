@@ -1,3 +1,4 @@
+import { timeStamp } from 'console';
 import pool from './connection.js'
 
 
@@ -69,6 +70,24 @@ export async function selectSpecial(){
   }
 
 }
+
+
+export async function searchDay(date: string) {
+   let searchTerm = date.toString();
+    
+   const query = `SELECT date::text AS date, starttime, productionamount, consumptionamount, hourlyprice FROM electricitydata WHERE date = '${searchTerm}'` 
+     try {
+      const result = await pool.query(query);
+      console.log(result.rows);
+      return result.rows;
+    } catch (error) {
+      console.error('Error executing query:', error);
+      throw error;
+    }
+}
+
+
+
 
 async function getConsecutiveNeg(){
     const query = "WITH negative_hours AS (SELECT DATE(starttime) AS date, starttime, ROW_NUMBER() OVER (PARTITION BY DATE(starttime) ORDER BY starttime) AS rn FROM electricitydata WHERE hourlyprice < 0), streaks AS (SELECT date, COUNT(*) AS streak_length FROM negative_hours GROUP BY date, (starttime - (rn * INTERVAL '1 hour')))SELECT date::text AS date, MAX(streak_length) AS longest_consecutive_negative_hours FROM streaks GROUP BY date ORDER BY date DESC;"
