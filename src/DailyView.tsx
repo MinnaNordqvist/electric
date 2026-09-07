@@ -54,13 +54,7 @@ export function DailyView(){
 
     if (row.starttime) {
       const d = new Date(row.starttime);
-      
-      // Local browser time:
       const hours = String(d.getHours()).padStart(2, "0");
-      
-      // Or UTC time:
-      // const hours = String(d.getUTCHours()).padStart(2, "0");
-      
       hourLabel = `${hours}:00`;
     }
 
@@ -166,10 +160,9 @@ export function DailyView(){
               />
 
             <Tooltip
-                formatter={(value: any, name: any, item: any) => {
+                formatter={(value: any, name: any) => {
                     if (name === "Production") {
-                        const mwh = item.payload.productionMWh;
-                        return [`${Number(value).toLocaleString()} kWh (${mwh} MWh/h)`, name];
+                        return [`${Number(value/1000).toLocaleString()} MWh/h`, name];
                     }
                     if (name === "Consumption") {
                          return [`${Number(value).toLocaleString()} kWh`, name];
@@ -192,7 +185,7 @@ export function DailyView(){
                 yAxisId="left"
                 type="monotone"
                 dataKey="productionkWh"
-                name="Production"
+                name="Production (MWh/h)"
                 stroke="#2563eb"
                 strokeWidth={2.5}
                 dot={{ r: 3 }}
