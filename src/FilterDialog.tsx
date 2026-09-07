@@ -18,7 +18,7 @@ export interface FilterCriteria {
     isOpen: boolean;
     onClose: () => void;
     activeFilters: FilterCriteria;
-    onApply: (filters: FilterCriteria) => void;
+    onApply: (filters: FilterCriteria, activePairs: ActiveFilter[]) => void;
     data: Array<{ date: string }>;
 }
 
@@ -37,11 +37,16 @@ const MONTHS = [
     { value: "12", label: "December" },
 ];
 
+export interface ActiveFilter {
+  key: keyof FilterCriteria;
+  value: string | number;
+}
 
 
 export function FilterDialog({ isOpen, onClose, activeFilters, onApply, data }: Props) {
     const [draft, setDraft] = useState<FilterCriteria>(activeFilters);
-    
+    const [activePairs, setActivePairs] = useState<ActiveFilter[]>([]);
+
     useEffect(() => {
         setDraft(activeFilters);
     }, [activeFilters, isOpen]);
@@ -56,7 +61,34 @@ export function FilterDialog({ isOpen, onClose, activeFilters, onApply, data }: 
         return Array.from(years).sort().reverse(); 
     }, [data]);
 
+    const updateFilter = (
+        key: keyof FilterCriteria,
+        rawValue: any,
+        displayValue?: string | number
+        ) => {
+        // 1. Update raw filter state for data filtering
+        setDraft((prev) => ({ ...prev, [key]: rawValue }));
+
+        // 2. Update active chip pair immediately
+        setActivePairs((prev) => {
+            const next = prev.filter((item) => item.key !== key);
+            if (rawValue !== "" && rawValue !== undefined) {
+                next.push({ key, value: displayValue ?? rawValue });
+            }
+        return next;
+    });
+    };
+    
+    const handleApply = () => {
+        onApply(draft, activePairs);
+        onClose();
+    };
+    
     if (!isOpen) return null;
+
+    
+
+
 
     return (
         <div className="modal-overlay" onClick={onClose}>
@@ -73,7 +105,8 @@ export function FilterDialog({ isOpen, onClose, activeFilters, onApply, data }: 
                     <select
                         id="filter-year"
                         value={draft.year || ""}
-                        onChange={(e) => setDraft({ ...draft, year: e.target.value })}
+                       onChange={(e) => updateFilter("year", e.target.value)}
+                        
                     >
                     <option value="">All Years</option>
                         {availableYears.map((yr) => (
@@ -89,7 +122,11 @@ export function FilterDialog({ isOpen, onClose, activeFilters, onApply, data }: 
               <select
                 id="filter-month"
                 value={draft.month || ""}
-                onChange={(e) => setDraft({ ...draft, month: e.target.value })}
+                onChange={(e) => {
+                    const val = e.target.value;
+                    const label = MONTHS[Number(val) - 1]?.label ?? val;
+                    updateFilter("month", val, label);
+                }}
               >
                 <option value="">All Months</option>
                 {MONTHS.map((m) => (
@@ -106,7 +143,10 @@ export function FilterDialog({ isOpen, onClose, activeFilters, onApply, data }: 
               min="0"
               step="0.1"
               value={draft.minProduction ?? ""}
-              onChange={(e) => setDraft({ ...draft, minProduction: e.target.value === "" ? "" : Number(e.target.value) })}
+              onChange={(e) => {
+                    const val = e.target.value === "" ? "" : Number(e.target.value);
+                    updateFilter("minProduction", val, val !== "" ? `${val} MWh/h` : "");
+               }}
             />  
         </div>        
 
@@ -118,7 +158,10 @@ export function FilterDialog({ isOpen, onClose, activeFilters, onApply, data }: 
               min="0"
               step="0.1"
               value={draft.maxProduction ?? ""}
-              onChange={(e) => setDraft({ ...draft, maxProduction: e.target.value === "" ? "" : Number(e.target.value) })}
+              onChange={(e) => {
+                    const val = e.target.value === "" ? "" : Number(e.target.value);
+                    updateFilter("maxProduction", val, val !== "" ? `${val} MWh/h` : "");
+               }}
             />  
         </div>        
 
@@ -130,7 +173,10 @@ export function FilterDialog({ isOpen, onClose, activeFilters, onApply, data }: 
               min="0"
               step="0.1"
               value={draft.minConsumption ?? ""}
-              onChange={(e) => setDraft({ ...draft, minConsumption: e.target.value === "" ? "" : Number(e.target.value) })}
+               onChange={(e) => {
+                    const val = e.target.value === "" ? "" : Number(e.target.value);
+                    updateFilter("minConsumption", val, val !== "" ? `${val} kWh` : "");
+               }}
             />      
         </div>        
 
@@ -142,7 +188,10 @@ export function FilterDialog({ isOpen, onClose, activeFilters, onApply, data }: 
               min="0"
               step="0.1"
               value={draft.maxConsumption ?? ""}
-              onChange={(e) => setDraft({ ...draft, maxConsumption: e.target.value === "" ? "" : Number(e.target.value) })}
+              onChange={(e) => {
+                    const val = e.target.value === "" ? "" : Number(e.target.value);
+                    updateFilter("maxConsumption", val, val !== "" ? `${val} kWh` : "");
+               }}
             />  
         </div>                
 
@@ -154,7 +203,10 @@ export function FilterDialog({ isOpen, onClose, activeFilters, onApply, data }: 
               type="number"
               step="0.1"
               value={draft.minPrice ?? ""}
-              onChange={(e) => setDraft({ ...draft, minPrice: e.target.value === "" ? "" : Number(e.target.value) })}
+              onChange={(e) => {
+                    const val = e.target.value === "" ? "" : Number(e.target.value);
+                    updateFilter("minPrice", val, val !== "" ? `${val} snt/kWh` : "");
+               }}
             />
         </div>                
 
@@ -165,7 +217,10 @@ export function FilterDialog({ isOpen, onClose, activeFilters, onApply, data }: 
               type="number"
               step="0.1"
               value={draft.maxPrice ?? ""}
-              onChange={(e) => setDraft({ ...draft, maxPrice: e.target.value === "" ? "" : Number(e.target.value) })}
+              onChange={(e) => {
+                    const val = e.target.value === "" ? "" : Number(e.target.value);
+                    updateFilter("maxPrice", val, val !== "" ? `${val} snt/kWh` : "");
+               }}
             />
         </div>        
 
@@ -201,14 +256,15 @@ export function FilterDialog({ isOpen, onClose, activeFilters, onApply, data }: 
                 className="btn-secondary"
                 onClick={() => {
                 setDraft({});
-                onApply({});
+                setActivePairs([]);
+                onApply({}, []);
                 onClose();
                 }}
             >
             Clear All
           </button>
           <button className="btn-secondary" onClick={onClose}>Cancel</button>
-          <button className="btn-primary" onClick={() => { onApply(draft); onClose(); }}>
+          <button className="btn-primary"onClick={handleApply}>
             Apply Filter
           </button>
         </div>            

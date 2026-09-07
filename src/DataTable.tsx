@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
-import { FilterDialog, FilterCriteria } from "./FilterDialog";
+import { FilterDialog, FilterCriteria, ActiveFilter } from "./FilterDialog";
 
 interface Electric {
   date: string;
@@ -25,6 +25,8 @@ export function DataTable(){
     const [selectedDate, setSelectedDate] = useState<string>("");
     const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
     const [filters, setFilters] = useState<FilterCriteria>({});
+    const [activeFilters, setActiveFilters] = useState<ActiveFilter[]>([]);
+
 
     // Fetch data from backend
     useEffect(() => {
@@ -68,52 +70,52 @@ export function DataTable(){
     const filteredData = useMemo(() =>{
         return data.filter((row) => {
       
-      if (filters.year && !row.date.startsWith(filters.year)) {
-        return false;
-      }
+        if (filters.year && !row.date.startsWith(filters.year)) {
+            return false;
+        }
 
     
-      if (filters.month) {
-        if (filters.year) {
-          if (!row.date.startsWith(`${filters.year}-${filters.month}`)) return false;
-        } else if (row.date.slice(5, 7) !== filters.month) {
-          return false;
+        if (filters.month) {
+            if (filters.year) {
+                if (!row.date.startsWith(`${filters.year}-${filters.month}`)) return false;
+            } else if (row.date.slice(5, 7) !== filters.month) {
+                return false;
+            }
         }
-      }
 
-      if (filters.minProduction !== "" && filters.minProduction !== undefined && row.total_production < filters.minProduction) {
-        return false;
-      }
-      if (filters.maxProduction !== "" && filters.maxProduction !== undefined && row.total_production > filters.maxProduction) {
-        return false;
-      }
+        if (filters.minProduction !== "" && filters.minProduction !== undefined && row.total_production < filters.minProduction) {
+            return false;
+        }
+        if (filters.maxProduction !== "" && filters.maxProduction !== undefined && row.total_production > filters.maxProduction) {
+            return false;
+        }
 
-      if (filters.minConsumption !== "" && filters.minConsumption !== undefined && row.total_consumption < filters.minConsumption) {
-        return false;
-      }
-      if (filters.maxConsumption !== "" && filters.maxConsumption !== undefined && row.total_consumption > filters.maxConsumption) {
-        return false;
-      }
+        if (filters.minConsumption !== "" && filters.minConsumption !== undefined && row.total_consumption < filters.minConsumption) {
+            return false;
+        }
+        if (filters.maxConsumption !== "" && filters.maxConsumption !== undefined && row.total_consumption > filters.maxConsumption) {
+            return false;
+        }
 
-      if (filters.minPrice !== "" && filters.minPrice !== undefined && row.average_price < filters.minPrice) {
-        return false;
-      }
-      if (filters.maxPrice !== "" && filters.maxPrice !== undefined && row.average_price > filters.maxPrice) {
-        return false;
-      }
+        if (filters.minPrice !== "" && filters.minPrice !== undefined && row.average_price < filters.minPrice) {
+            return false;
+        }
+        if (filters.maxPrice !== "" && filters.maxPrice !== undefined && row.average_price > filters.maxPrice) {
+            return false;
+        }
 
-      if (filters.minStreak !== "" && filters.minStreak !== undefined && row.longest_consecutive_negative_hours < filters.minStreak) {
-        return false;
-      }
-      if (filters.maxStreak !== "" && filters.maxStreak !== undefined && row.longest_consecutive_negative_hours > filters.maxStreak) {
-        return false;
-      }
-
+        if (filters.minStreak !== "" && filters.minStreak !== undefined && row.longest_consecutive_negative_hours < filters.minStreak) {
+            return false;
+        }
+        if (filters.maxStreak !== "" && filters.maxStreak !== undefined && row.longest_consecutive_negative_hours > filters.maxStreak) {
+            return false;
+        }
 
       return true;
     });
   }, [data, filters]);
 
+    const hasActiveFilters = Object.values(filters).some((val) => val !== "" && val !== undefined);
    
     // Sort by column
     const handleSort = (field: SortField) => {
@@ -187,44 +189,58 @@ export function DataTable(){
         (_, i) => startPage + i
     );
 
-   const hasActiveFilters = Object.values(filters).some((val) => val !== "" && val !== undefined);
+  
 
     return(
         <>
-        <div className="table-wrapper">
+      <div className="table-wrapper">
         
-      <div className="table-controls">
-        <button
-          className={`btn-filter-trigger ${hasActiveFilters ? "active" : ""}`}
-          onClick={() => setIsFilterOpen(true)}
-        >
-          🔍 {hasActiveFilters ? "Filters Applied" : "Filter Data"}
-        </button>
+        <div className="table-controls">
+            <button
+                className={`btn-filter-trigger ${hasActiveFilters ? "active" : ""}`}
+                onClick={() => setIsFilterOpen(true)}
+            >
+                🔍 {hasActiveFilters ? "Filters Applied" : "Filter Data"}
+            </button>
+        
+            {activeFilters.length > 0 && (
+                <div className="active-filters-bar">
+                    <span className="active-filters-label">Active:</span>
+                        {activeFilters.map(({ key, value }) => (
+                            <span key={key} className="filter-chip">
+                            <span className="filter-chip-key">{key}:</span> {value}
+                        <button
+                            type="button"
+                            className="btn-chip-remove"
+                            onClick={() => {
+                            setFilters(({ [key]: _, ...rest }) => rest);
+                            setActiveFilters((prev) => prev.filter((item) => item.key !== key));
+                            }}
+                        >
+                        &times;
+                        </button>
+                    </span>
+                        ))}
+                </div>
+            )}
+            <button>
+                Clear Filters
+            </button>
+       
 
-        {hasActiveFilters && (
-          <button
-            className="btn-filter-trigger"
-            onClick={() => {
-              setFilters({});
-              setCurrentPage(1);
-            }}
-          >
-            Clear Filters
-          </button>
-        )}
-
-        <span className="record-count">
-          Showing {sortedData.length} of {data.length} records
-        </span>
-      </div>
-      <FilterDialog
+            <span className="record-count">
+                Showing {sortedData.length} of {data.length} records
+            </span>
+        </div>
+        <FilterDialog
             isOpen={isFilterOpen}
             onClose={() => setIsFilterOpen(false)}
             activeFilters={filters}
             data={data}
-            onApply={(newFilters) => {
+            onApply={(newFilters, newActivePairs) => {
                 setFilters(newFilters);
-                setCurrentPage(1); 
+                setActiveFilters(newActivePairs);
+                setCurrentPage(1);
             }}
         />
        <div className="filter-bar">
@@ -256,7 +272,8 @@ export function DataTable(){
           </button>
         )}
       </div>
-        <table className="dataTable">
+      
+       <table className="dataTable">
           <thead>
             <tr>
               <th className="sortable" onClick={() => handleSort("date")} >Date    {renderSortArrow("date")}</th>
@@ -278,50 +295,51 @@ export function DataTable(){
             ))}
           </tbody>
         </table>
-        <div className="pagination-container">
-         <button
-            className="btn-nav"
-            onClick={() => setCurrentPage(1)}
-            disabled={currentPage === 1}>
-            &laquo; First
-        </button>
-
-         <button 
-            className="btn-nav"
-            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-            disabled={currentPage === 1}>
-             Prev
-        </button>   
-       
-        {startPage > 1 && <span className="pagination-ellipsis">...</span>}        
-
-         {pageNumbers.map((number) => (
-          <button
-            key={number}
-            onClick={() => setCurrentPage(number)}
-            className={`btn-page ${number === currentPage ? "active" : ""}`}>
-                {number}
-            </button>   
-          ))}  
-
-        {endPage < totalPages && <span className="pagination-ellipsis">...</span>}
-          
-         <button
-            className="btn-nav"
-            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-            disabled={currentPage === totalPages}>
-            Next 
-        </button>    
         
-        <button
-            className="btn-nav"
-            onClick={() => setCurrentPage(totalPages)}
-            disabled={currentPage === totalPages}>
-            Last &raquo;
-        </button> 
+        <div className="pagination-container">
+            <button
+                className="btn-nav"
+                onClick={() => setCurrentPage(1)}
+                disabled={currentPage === 1}>
+                &laquo; First
+            </button>
+
+            <button 
+                className="btn-nav"
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}>
+                Prev
+            </button>   
+       
+            {startPage > 1 && <span className="pagination-ellipsis">...</span>}        
+
+            {pageNumbers.map((number) => (
+                <button
+                    key={number}
+                    onClick={() => setCurrentPage(number)}
+                    className={`btn-page ${number === currentPage ? "active" : ""}`}>
+                    {number}
+                </button>   
+            ))}  
+
+            {endPage < totalPages && <span className="pagination-ellipsis">...</span>}
+          
+            <button
+                className="btn-nav"
+                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                disabled={currentPage === totalPages}>
+                Next 
+            </button>    
+        
+            <button
+                className="btn-nav"
+                onClick={() => setCurrentPage(totalPages)}
+                disabled={currentPage === totalPages}>
+                Last &raquo;
+            </button> 
         </div>    
 
-        </div>
+      </div>
         </>
     )
 }
