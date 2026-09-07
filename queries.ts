@@ -86,7 +86,16 @@ export async function searchDay(date: string) {
     }
 }
 
-
+export async function getDateBounds() {
+  const query = `SELECT MIN(date::text) AS min_date, MAX(date::text) AS max_date FROM electricitydata;`;
+  try {
+    const result = await pool.query(query);
+    return result.rows[0];
+  } catch (error) {
+    console.error('Error fetching date bounds:', error);
+    throw error;
+  }
+}
 
 
 async function getConsecutiveNeg(){

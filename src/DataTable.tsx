@@ -22,7 +22,7 @@ export function DataTable(){
     const pageSize = 10;
     const [sortField, setSortField] = useState<SortField>("date");
     const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
-    const [selectedDate, setSelectedDate] = useState<string>("");
+   
     const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
     const [filters, setFilters] = useState<FilterCriteria>({});
     const [activeFilters, setActiveFilters] = useState<ActiveFilter[]>([]);
@@ -38,33 +38,11 @@ export function DataTable(){
     }, []);
 
     
-    // Set start and end dates
-    const { minDate, maxDate } = useMemo(() => {
-        if (!data.length) return { minDate: "", maxDate: "" };
-
-        let min = data[0].date;
-        let max = data[0].date;
-
-        for (const row of data) {
-            if (row.date < min) min = row.date;
-            if (row.date > max) max = row.date;
-        }
-
-        return {
-            minDate: min,
-            maxDate: max,
-        };
-    }, [data]);
+    
 
 
 
-    /*
-    // Search date
-    const filteredDate = useMemo(() => {
-        if (!selectedDate) return data;
-        return data.filter((row) => row.date === selectedDate);
-    }, [data, selectedDate]);
-   */
+  
     // Clean chip removal handler
   const handleRemoveChip = (chipKey: string) => {
    
@@ -270,36 +248,7 @@ export function DataTable(){
                 setCurrentPage(1);
             }}
         />
-       <div className="filter-bar">
-        <label htmlFor="date-filter">Select Date:</label>
-        <input
-          id="date-filter"
-          type="date"
-          className="date-picker-input"
-          min={minDate}
-          max={maxDate}
-          value={selectedDate}
-          onChange={(e) => {
-            const val = e.target.value;
-            if (val === "" || val.length === 10) {
-                setSelectedDate(val);
-                setCurrentPage(1);
-            }
-          }}
-        />
-        {selectedDate && (
-          <button
-            className="btn-clear-filter"
-            onClick={() => {
-              setSelectedDate("");
-              setCurrentPage(1);
-            }}
-          >
-            Clear Date
-          </button>
-        )}
-      </div>
-      
+       
        <table className="dataTable">
           <thead>
             <tr>

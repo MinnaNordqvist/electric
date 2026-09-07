@@ -1,5 +1,5 @@
 import express from 'express';
-import { searchDay, selectSpecial } from './queries.js';
+import { searchDay, selectSpecial, getDateBounds } from './queries.js';
 
 const app = express();
 const PORT = 3000;
@@ -13,6 +13,16 @@ app.get('/', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+app.get('/range', async (req, res) => {
+  try {
+    const bounds = await getDateBounds();
+    res.json(bounds); 
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 
 app.get('/day', async (req, res) => {
   try {
