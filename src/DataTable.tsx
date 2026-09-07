@@ -66,37 +66,19 @@ export function DataTable(){
    */
     // Clean chip removal handler
   const handleRemoveChip = (chipKey: string) => {
-    // 1. Remove from active chips array
+   
     setActiveFilters((prev) => prev.filter((item) => item.key !== chipKey));
 
-    // 2. Remove from criteria object
     setFilters((prev) => {
       const next = { ...prev };
 
-      // Direct property key match
+      
       if (chipKey in next) {
         delete next[chipKey as keyof FilterCriteria];
         return next;
       }
 
-      // Display label fallback map
-      const labelToKeyMap: Record<string, keyof FilterCriteria> = {
-        "Year": "year",
-        "Month": "month",
-        "Min Production": "minProduction",
-        "Max Production": "maxProduction",
-        "Min Consumption": "minConsumption",
-        "Max Consumption": "maxConsumption",
-        "Min Price": "minPrice",
-        "Max Price": "maxPrice",
-        "Min Streak": "minStreak",
-        "Max Streak": "maxStreak",
-      };
-
-      const mappedKey = labelToKeyMap[chipKey];
-      if (mappedKey && mappedKey in next) {
-        delete next[mappedKey];
-      }
+     
 
       return next;
     });
