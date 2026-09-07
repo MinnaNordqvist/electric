@@ -16,7 +16,7 @@ app.get('/', async (req, res) => {
 
 app.get('/day', async (req, res) => {
   try {
-    const stats = await searchDay("2024-10-01");
+    const stats = await searchDay("2024-09-29");
     res.json(stats);
   } catch (error) {
     console.error('Error fetching daily stats:', error);

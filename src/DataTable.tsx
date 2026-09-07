@@ -37,12 +37,7 @@ export function DataTable(){
         });
     }, []);
 
-    useEffect(() => {
-        fetch("/api/day")
-        .then((res) => res.json)
-    })
-
-
+    
     // Set start and end dates
     const { minDate, maxDate } = useMemo(() => {
         if (!data.length) return { minDate: "", maxDate: "" };

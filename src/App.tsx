@@ -1,5 +1,6 @@
 
 import "./App.css"
+import { DailyView } from "./DailyView";
 import { DataTable } from "./DataTable";
 
 export function App() {
@@ -15,6 +16,9 @@ export function App() {
     </div>
     
     <DataTable />
+    <section id="spacer"></section>
+    
+    <DailyView />
 
     <section id="spacer"></section>
     <div className="footer">
