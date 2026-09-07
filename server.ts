@@ -16,7 +16,11 @@ app.get('/', async (req, res) => {
 
 app.get('/day', async (req, res) => {
   try {
-    const stats = await searchDay("2024-09-29");
+   const date = req.query.date as string;
+    if (!date) {
+      return res.status(400).json({ error: 'Date parameter is required' });
+    }
+    const stats = await searchDay(date);
     res.json(stats);
   } catch (error) {
     console.error('Error fetching daily stats:', error);
