@@ -165,14 +165,27 @@ export function DailyView(){
                 }}
               />
 
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: "#ffffff",
-                  borderRadius: "8px",
-                  border: "1px solid #cbd5e1",
-                  boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+            <Tooltip
+                formatter={(value: any, name: any, item: any) => {
+                    if (name === "Production") {
+                        const mwh = item.payload.productionMWh;
+                        return [`${Number(value).toLocaleString()} kWh (${mwh} MWh/h)`, name];
+                    }
+                    if (name === "Consumption") {
+                         return [`${Number(value).toLocaleString()} kWh`, name];
+                    }
+                    if (name === "Price") {
+                        return [`${value} snt/kWh`, name];
+                    }
+                    return [value, name];
                 }}
-              />
+                contentStyle={{
+                    backgroundColor: "#ffffff",
+                    borderRadius: "8px",
+                    border: "1px solid #cbd5e1",
+                    boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+                }}
+            />
               <Legend wrapperStyle={{ paddingBottom: "10px" }} />
 
               <Line
