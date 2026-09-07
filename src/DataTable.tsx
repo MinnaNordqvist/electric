@@ -22,7 +22,7 @@ export function DataTable(){
     const pageSize = 10;
     const [sortField, setSortField] = useState<SortField>("date");
     const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
-   
+    const [selectedDate, setSelectedDate] = useState<string>("");
     const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
     const [filters, setFilters] = useState<FilterCriteria>({});
     const [activeFilters, setActiveFilters] = useState<ActiveFilter[]>([]);
@@ -37,12 +37,24 @@ export function DataTable(){
         });
     }, []);
 
-    
-    
+    // Set start and end dates
+    const { minDate, maxDate } = useMemo(() => {
+        if (!data.length) return { minDate: "", maxDate: "" };
 
+        let min = data[0].date;
+        let max = data[0].date;
 
+        for (const row of data) {
+            if (row.date < min) min = row.date;
+            if (row.date > max) max = row.date;
+        }
 
-  
+        return {
+            minDate: min,
+            maxDate: max,
+        };
+    }, [data]);
+
     // Clean chip removal handler
   const handleRemoveChip = (chipKey: string) => {
    
@@ -67,7 +79,6 @@ export function DataTable(){
   // Clear all filters handler
   const handleClearAllFilters = () => {
     setFilters({});
-    
     setActiveFilters([]);
     setCurrentPage(1);
   };
@@ -122,7 +133,15 @@ export function DataTable(){
   }, [data, filters]);
 
     const hasActiveFilters = Object.values(filters).some((val) => val !== "" && val !== undefined);
-   
+
+
+    // Search Date
+      const dailyData = useMemo(() => {
+        if (!selectedDate) return filteredData;
+        return filteredData.filter((row) => row.date === selectedDate);
+    }, [filteredData, selectedDate]);
+
+
     // Sort by column
     const handleSort = (field: SortField) => {
         if (sortField === field) {
@@ -135,9 +154,9 @@ export function DataTable(){
     };
 
     const sortedData = useMemo(() => {
-        if (filteredData.length <= 1) return filteredData;
+        if (dailyData.length <= 1) return dailyData;
         
-        return [...filteredData].sort((a, b) => {
+        return [...dailyData].sort((a, b) => {
             if (sortField === "date") {
                 return sortDirection === "asc" 
                 ? String(a.date).localeCompare(String(b.date))
@@ -158,7 +177,7 @@ export function DataTable(){
             return sortDirection === "asc" ? numA - numB : numB - numA;
         
         });
-    }, [filteredData, sortField, sortDirection]);
+    }, [dailyData, sortField, sortDirection]);
 
     
     const renderSortArrow = (field: SortField) => {
@@ -245,10 +264,39 @@ export function DataTable(){
             onApply={(newFilters, newActivePairs) => {
                 setFilters(newFilters);
                 setActiveFilters(newActivePairs);
+                setSelectedDate("");
                 setCurrentPage(1);
             }}
         />
-       
+        <div className="filter-bar">
+        <label htmlFor="date-filter">Select Date:</label>
+        <input
+          id="date-filter"
+          type="date"
+          className="date-picker-input"
+          min={minDate}
+          max={maxDate}
+          value={selectedDate}
+          onChange={(e) => {
+            const val = e.target.value;
+            if (val === "" || val.length === 10) {
+                setSelectedDate(val);
+                setCurrentPage(1);
+            }
+          }}
+        />
+        {selectedDate && (
+          <button
+            className="btn-filter-trigger"
+            onClick={() => {
+              setSelectedDate("");
+              setCurrentPage(1);
+            }}
+          >
+            Clear Date
+          </button>
+        )}
+      </div>
        <table className="dataTable">
           <thead>
             <tr>

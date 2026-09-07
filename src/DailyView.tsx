@@ -29,7 +29,7 @@ export function DailyView(){
      
 
     // 2. Fetch daily records only when a valid date is explicitly selected
-    useEffect(() => {
+   useEffect(() => {
         if (!selectedDate) {
             setDailyRows([]);
             return;
@@ -48,17 +48,17 @@ export function DailyView(){
         });
     }, [selectedDate]);
 
-  const chartData = useMemo(() => {
-    return dailyRows.map((row) => {
-    let hourLabel = "00:00";
+   const chartData = useMemo(() => {
+     return dailyRows.map((row) => {
+     let hourLabel = "00:00";
 
-    if (row.starttime) {
-      const d = new Date(row.starttime);
-      const hours = String(d.getHours()).padStart(2, "0");
-      hourLabel = `${hours}:00`;
-    }
+     if (row.starttime) {
+       const d = new Date(row.starttime);
+       const hours = String(d.getHours()).padStart(2, "0");
+       hourLabel = `${hours}:00`;
+     }
 
-   
+    
 
     return {
       hour: hourLabel,
@@ -68,7 +68,7 @@ export function DailyView(){
       price: Number(row.hourlyprice) || 0,
     };
   });
-}, [dailyRows]);
+ }, [dailyRows]);
 
     return (
         <div className="table-wrapper">
