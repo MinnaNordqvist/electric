@@ -114,8 +114,8 @@ export function FilterDialog({ isOpen, onClose, activeFilters, onApply, data }: 
                         ))}
                     </select>
                 </div>
-              </div>
-            </div>
+             
+           
 
             <div className="form-group">
               <label htmlFor="filter-month">Month:</label>
@@ -134,18 +134,19 @@ export function FilterDialog({ isOpen, onClose, activeFilters, onApply, data }: 
                 ))}
               </select>
             </div>
-
+             </div>    
+        <div className="form-row">
         <div className="form-group">
             <label htmlFor="filter-min-production">Min Production (MWh/h):</label>  
              <input
               id="filter-min-production"
               type="number"
               min="0"
-              step="0.1"
+              step="10"
               value={draft.minProduction ?? ""}
               onChange={(e) => {
                     const val = e.target.value === "" ? "" : Number(e.target.value);
-                    updateFilter("minProduction", val, val !== "" ? `${val} MWh/h` : "");
+                    updateFilter("minProduction", val, val !== "" ? `${val}` : "");
                }}
             />  
         </div>        
@@ -156,26 +157,27 @@ export function FilterDialog({ isOpen, onClose, activeFilters, onApply, data }: 
               id="filter-max-production"
               type="number"
               min="0"
-              step="0.1"
+              step="10"
               value={draft.maxProduction ?? ""}
               onChange={(e) => {
                     const val = e.target.value === "" ? "" : Number(e.target.value);
-                    updateFilter("maxProduction", val, val !== "" ? `${val} MWh/h` : "");
+                    updateFilter("maxProduction", val, val !== "" ? `${val}` : "");
                }}
             />  
         </div>        
-
+         </div>
+        <div className="form-row">      
         <div className="form-group">
             <label htmlFor="filter-min-consumption">Min Consumption (kWh):</label>
             <input
               id="filter-min-consumption"
               type="number"
               min="0"
-              step="0.1"
+              step="10"
               value={draft.minConsumption ?? ""}
                onChange={(e) => {
                     const val = e.target.value === "" ? "" : Number(e.target.value);
-                    updateFilter("minConsumption", val, val !== "" ? `${val} kWh` : "");
+                    updateFilter("minConsumption", val, val !== "" ? `${val}` : "");
                }}
             />      
         </div>        
@@ -186,16 +188,16 @@ export function FilterDialog({ isOpen, onClose, activeFilters, onApply, data }: 
               id="filter-max-consumption"
               type="number"
               min="0"
-              step="0.1"
+              step="10"
               value={draft.maxConsumption ?? ""}
               onChange={(e) => {
                     const val = e.target.value === "" ? "" : Number(e.target.value);
-                    updateFilter("maxConsumption", val, val !== "" ? `${val} kWh` : "");
+                    updateFilter("maxConsumption", val, val !== "" ? `${val}` : "");
                }}
             />  
         </div>                
-
-
+        </div>       
+               <div className="form-row">
         <div className="form-group">
             <label htmlFor="filter-min-price">Min Price (snt/kWh):</label>
             <input
@@ -205,7 +207,7 @@ export function FilterDialog({ isOpen, onClose, activeFilters, onApply, data }: 
               value={draft.minPrice ?? ""}
               onChange={(e) => {
                     const val = e.target.value === "" ? "" : Number(e.target.value);
-                    updateFilter("minPrice", val, val !== "" ? `${val} snt/kWh` : "");
+                    updateFilter("minPrice", val, val !== "" ? `${val}` : "");
                }}
             />
         </div>                
@@ -219,11 +221,12 @@ export function FilterDialog({ isOpen, onClose, activeFilters, onApply, data }: 
               value={draft.maxPrice ?? ""}
               onChange={(e) => {
                     const val = e.target.value === "" ? "" : Number(e.target.value);
-                    updateFilter("maxPrice", val, val !== "" ? `${val} snt/kWh` : "");
+                    updateFilter("maxPrice", val, val !== "" ? `${val}` : "");
                }}
             />
         </div>        
-
+               </div>
+               <div className="form-row">
         <div className="form-group">
            <label htmlFor="filter-min-streak">Min consecutive negative hours</label>
            <input
@@ -233,7 +236,10 @@ export function FilterDialog({ isOpen, onClose, activeFilters, onApply, data }: 
               max="24"
               step="1"
               value={draft.minStreak ?? ""}
-              onChange={(e) => setDraft({ ...draft, minStreak: e.target.value === "" ? "" : Number(e.target.value) })}
+               onChange={(e) => {
+                    const val = e.target.value === "" ? "" : Number(e.target.value);
+                    updateFilter("minStreak", val, val !== "" ? `${val}` : "");
+               }}
             />
         </div>        
 
@@ -246,11 +252,14 @@ export function FilterDialog({ isOpen, onClose, activeFilters, onApply, data }: 
               max="24"
               step="1"
               value={draft.maxStreak ?? ""}
-              onChange={(e) => setDraft({ ...draft, maxStreak: e.target.value === "" ? "" : Number(e.target.value) })}
+               onChange={(e) => {
+                    const val = e.target.value === "" ? "" : Number(e.target.value);
+                    updateFilter("maxStreak", val, val !== "" ? `${val}` : "");
+               }}
             />
         </div>   
-
-
+         </div>      
+        </div>
         <div className="modal-footer">
           <button
                 className="btn-secondary"
