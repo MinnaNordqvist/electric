@@ -1,32 +1,15 @@
 import { useEffect, useState, useMemo } from "react"
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
+interface DailyViewProps {
+  selectedDate: string;
+}
 
 
-export function DailyView(){
-    const [dailyRows, setDailyRows] = useState<any[]>([]);
-    const [selectedDate, setSelectedDate] = useState<string>("");
-    const [dateBounds, setDateBounds] = useState<{ min: string; max: string }>({
-        min: "",
-        max: "",
-    });
+export function DailyView({ selectedDate }: DailyViewProps){
+    const [dailyRows, setDailyRows] = useState<any[]>([]);    
     const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  // 1. Fetch available min/max date bounds once on mount
-  useEffect(() => {
-    fetch("/api/range")
-      .then((res) => res.json())
-      .then((bounds) => {
-        if (bounds.min_date && bounds.max_date) {
-          setDateBounds({
-            min: bounds.min_date,
-            max: bounds.max_date,
-          });
-        }
-      })
-      .catch((err) => console.error("Error fetching date range:", err));
-    }, []);
-     
+    
 
     // 2. Fetch daily records only when a valid date is explicitly selected
    useEffect(() => {
@@ -72,37 +55,8 @@ export function DailyView(){
 
     return (
         <div className="table-wrapper">
-            <div className="filter-bar" style={{ marginBottom: "16px" }}>
-               <div className="filter-bar">
-                <label htmlFor="date-filter">Select Date:</label>
-                <input
-                    id="date-filter"
-                    type="date"
-                    className="date-picker-input"
-                    min={dateBounds.min}
-                    max={dateBounds.max}
-                    value={selectedDate}
-                    onChange={(e) => {
-                    const val = e.target.value;
-                    if (val === "" || val.length === 10) {
-                        setSelectedDate(val);
-              
-                    }
-                    }}
-                />
-                 {selectedDate && (
-                    <button
-                        className="btn-clear-filter"
-                         onClick={() => {
-                        setSelectedDate("");
-             
-                         }}
-                    >
-                    Clear Date
-                    </button>
-                )}
-      </div>
-       </div>
+      
+       
 
            <p className="record-count">
         {selectedDate

@@ -1,4 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
+
 import { FilterDialog, FilterCriteria, ActiveFilter } from "./FilterDialog";
 
 interface Electric {
@@ -13,16 +14,19 @@ type SortField = keyof Electric;
 type SortDirection = "asc" | "desc";
 
 
+interface DataTableProps {
+  selectedDate: string;
+  onDateChange: (date: string) => void;
+}
 
 
-
-export function DataTable(){
+export function DataTable({selectedDate, onDateChange }: DataTableProps){
     const [data, setData] = useState<any[]>([]);  
     const [currentPage, setCurrentPage] = useState<number>(1);
     const pageSize = 10;
     const [sortField, setSortField] = useState<SortField>("date");
     const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
-    const [selectedDate, setSelectedDate] = useState<string>("");
+  
     const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
     const [filters, setFilters] = useState<FilterCriteria>({});
     const [activeFilters, setActiveFilters] = useState<ActiveFilter[]>([]);
@@ -264,7 +268,7 @@ export function DataTable(){
             onApply={(newFilters, newActivePairs) => {
                 setFilters(newFilters);
                 setActiveFilters(newActivePairs);
-                setSelectedDate("");
+                onDateChange("");
                 setCurrentPage(1);
             }}
         />
@@ -277,19 +281,13 @@ export function DataTable(){
           min={minDate}
           max={maxDate}
           value={selectedDate}
-          onChange={(e) => {
-            const val = e.target.value;
-            if (val === "" || val.length === 10) {
-                setSelectedDate(val);
-                setCurrentPage(1);
-            }
-          }}
+          onChange={(e) => onDateChange(e.target.value)}
         />
         {selectedDate && (
           <button
             className="btn-filter-trigger"
             onClick={() => {
-              setSelectedDate("");
+              onDateChange("");
               setCurrentPage(1);
             }}
           >
