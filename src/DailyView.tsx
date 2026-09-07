@@ -64,11 +64,12 @@ export function DailyView(){
       hourLabel = `${hours}:00`;
     }
 
-
+   
 
     return {
       hour: hourLabel,
-      production: Number(row.productionamount) * 1000,
+      productionkWh: Number(row.productionamount) * 1000 || 0,
+      productionMWh: Number(row.productionamount) || 0,
       consumption: Number(row.consumptionamount) || 0,
       price: Number(row.hourlyprice) || 0,
     };
@@ -137,18 +138,18 @@ export function DailyView(){
             />
               
              {/* Left Y-Axis: Unified Energy Scale in kWh */}
-  <YAxis
-    yAxisId="left"
-    stroke="#2563eb"
-    tick={{ fontSize: 12 }}
-    tickFormatter={(val) => `${(val / 1000)}`} 
-    label={{
-      value: "Energy Volume (kWh)",
-      angle: -90,
-      position: "insideLeft",
-      style: { fill: "#2563eb", fontSize: 12 },
-    }}
-  />
+             <YAxis
+              yAxisId="left"
+              stroke="#2563eb"
+              tick={{ fontSize: 12 }}
+              tickFormatter={(val) => `${(val / 1000)}`} 
+              label={{
+                    value: "Energy Volume (kWh)",
+                    angle: -90,
+                    position: "insideLeft",
+                    style: { fill: "#2563eb", fontSize: 12 },
+               }}
+              />
               
               {/* Right Y-Axis: Price */}
               <YAxis
@@ -172,13 +173,13 @@ export function DailyView(){
                   boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
                 }}
               />
-              <Legend verticalAlign="top" wrapperStyle={{ paddingBottom: "10px" }} />
+              <Legend wrapperStyle={{ paddingBottom: "10px" }} />
 
               <Line
                 yAxisId="left"
                 type="monotone"
-                dataKey="production"
-                name="Production (MWh/h)"
+                dataKey="productionkWh"
+                name="Production"
                 stroke="#2563eb"
                 strokeWidth={2.5}
                 dot={{ r: 3 }}
