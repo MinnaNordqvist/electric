@@ -33,7 +33,7 @@ npm start
 ```
 
 Open browser window at `http://localhost:5173`
-
+Backend at `http://localhost:3001/`
 
 ## Done:
 ✅ Daily Statistics table:
