@@ -6,7 +6,7 @@ Solita Academy Exercise
 - Docker Desktop (running)
 - Node.js 
 ### Installation and Setup:
-1. Clone the repository  
+1. Clone the repository and set the working directory  
 
 ```
 git clone https://github.com/MinnaNordqvist/electric
@@ -33,7 +33,7 @@ docker compose up -d --build
 docker compose ps
 ```
 
-5. Run the frontend  
+5. Install and run the frontend  
 
 ```
 npm install
@@ -42,8 +42,9 @@ npm start
 
 Open browser window at `http://localhost:5173`  
 
-Backend at `http://localhost:3001`
+(Backend at `http://localhost:3001`)
 
+Exit the app with `Ctrl + C` and confirm with `Y`
 
 
 ## Done:
