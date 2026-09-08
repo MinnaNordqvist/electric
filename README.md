@@ -13,19 +13,27 @@ git clone https://github.com/MinnaNordqvist/electric
 cd electric
 ```
 
-2. Start Database and Docker  
+2. Create .env file from the template  
+
+```
+cp .env.example .env      # On Mac/Linux
+copy .env.example .env    # On Windows PowerShell
+```
+
+
+3. Start Database and Docker  
 
 ```
 docker compose up -d --build 
 ```
 
-3. Verify containers are healthy  
+4. Verify containers are healthy  
 
 ```
 docker compose ps
 ```
 
-4. Run the frontend  
+5. Run the frontend  
 
 ```
 npm install
@@ -33,8 +41,10 @@ npm start
 ```
 
 Open browser window at `http://localhost:5173`  
- 
+
 Backend at `http://localhost:3001`
+
+
 
 ## Done:
 ✅ Daily Statistics table:
