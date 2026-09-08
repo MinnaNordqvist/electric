@@ -13,10 +13,26 @@ git clone https://github.com/MinnaNordqvist/electric
 cd electric
 ```
 
-2. Start Database and Docker
-`docker compose up -d --build` 
+2. Start Database and Docker  
 
+```
+docker compose up -d --build 
+```
 
+3. Verify containers are healthy  
+
+```
+docker compose ps
+```
+
+4. Run the frontend  
+
+```
+npm install
+npm start
+```
+
+Open browser window at `http://localhost:5173`
 
 
 ## Done:
