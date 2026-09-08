@@ -47,7 +47,7 @@ Open browser window at `http://localhost:5173`
 Stop the app with `Ctrl + C` and confirm with `y`
 
 
-## Done:
+### Done:
 ✅ Daily Statistics table:
 - Total electricity consumption per day
 - Total electricity production per day
@@ -66,7 +66,7 @@ Find the hour with most electricity consumption compared to production, and the 
 ✅ Running backend in Docker  
 
 
-## Not done:
+### Not done:
 ❌ Mobile optimization  
 ❌ Dark theme  
 ❌ Make it pretty
