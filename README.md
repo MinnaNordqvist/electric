@@ -21,4 +21,9 @@ Select a date to see a graph visualisation by the hour.
 Find the hour with most electricity consumption compared to production, and the cheapest electricity hours for the day at one glance.  
 
 
+## Not done:
+❌ Mobile optimization  
+❌ Dark theme
+
+
   
