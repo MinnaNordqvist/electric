@@ -7,13 +7,13 @@ export function Dashboard() {
 
   return (
     <div className="dashboard-layout">
-      {/* Date picker lives in DataTable, updates parent state */}
+     
       <DataTable 
         selectedDate={selectedDate} 
         onDateChange={setSelectedDate} 
       />
 
-      {/* DailyView receives selectedDate to render the chart */}
+      
       <DailyView selectedDate={selectedDate} />
     </div>
   );

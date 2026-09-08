@@ -15,7 +15,7 @@ More to come
 ✅ Searching  
 ✅ Filtering  
 
-✅ Single Day View  
+✅ Single Day View:  
 Select a date to see a graph visualisation by the hour.  
 **Consumption, production, price.**  
 Find the hour with most electricity consumption compared to production, and the cheapest electricity hours for the day at one glance.  
