@@ -15,5 +15,9 @@ More to come
 ✅ Searching  
 ✅ Filtering  
 
+✅ Single Day View  
+Select a date to see a graph visualisation by the hour.  
+Consumption, production, price.  
+
 
   
