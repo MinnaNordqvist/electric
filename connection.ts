@@ -11,23 +11,6 @@ const pool = new Pool({
 });
 
 
-/**
- * Asynchronously verifies the PostgreSQL connection.
- * Ensures that any issues are logged immediately at application startup.
- */
-async function verifyConnection(): Promise<void> {
-  try {
-    // Attempt to acquire a client from the pool
-    const client = await pool.connect();
-    console.log('✅ Connected to PostgreSQL database');
-    client.release(); // Release the client back to the pool
-  } catch (error) {
-    console.error('❌ Error connecting to the database:', error);
-  }
-}
-
-// Immediately verify connection upon module load.
-verifyConnection();
 
 // Export the pool to be used across the application.
 export default pool;

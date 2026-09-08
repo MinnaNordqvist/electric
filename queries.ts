@@ -1,7 +1,4 @@
-import { timeStamp } from 'console';
 import pool from './connection.js'
-
-
 
 
 export async function selectAll(){

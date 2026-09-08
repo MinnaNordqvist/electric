@@ -1,8 +1,11 @@
 import express from 'express';
+import cors from 'cors';
 import { searchDay, selectSpecial } from './queries.js';
 
 const app = express();
-const PORT = 3000;
+const PORT = 3001;
+
+app.use(cors());
 
 app.get('/', async (req, res) => {
   try {

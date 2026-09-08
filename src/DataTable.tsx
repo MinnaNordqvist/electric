@@ -34,11 +34,24 @@ export function DataTable({selectedDate, onDateChange }: DataTableProps){
 
     // Fetch data from backend
     useEffect(() => {
-         fetch('/api')
-        .then((res) => res.json())
+        fetch('/api')
+        .then((res) => {
+            if (!res.ok) {
+                throw new Error(`Server returned status ${res.status}`);
+            }
+            return res.json();
+        })
         .then((resData) => {
-            setData([...resData]); 
-        });
+            console.log('API Data received:', resData);
+      
+     
+            if (Array.isArray(resData)) {
+                setData(resData);
+            } else {
+                setData([resData]); 
+            }
+        })
+        .catch((err) => console.error('Frontend fetch error:', err));
     }, []);
 
     // Set start and end dates
