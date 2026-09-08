@@ -44,7 +44,7 @@ Open browser window at `http://localhost:5173`
 
 (Backend at `http://localhost:3001`)
 
-Exit the app with `Ctrl + C` and confirm with `Y`
+Stop the app with `Ctrl + C` and confirm with `y`
 
 
 ## Done:
