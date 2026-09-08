@@ -56,24 +56,24 @@ export function DailyView({ selectedDate }: DailyViewProps){
     }, [dailyRows]);
 
     return (
-      <div className="table-wrapper">
-          <p className="record-count">
-            {selectedDate
-                ? `Daily Overview for ${selectedDate} (${chartData.length} hours plotted)`
-                : "Select a date above to display the daily chart."}
-          </p>
+        <div className="table-wrapper">
+            <p className="record-count">
+                {selectedDate
+                    ? `Daily Overview for ${selectedDate} (${chartData.length} hours plotted)`
+                    : "Select a date above to display the daily chart."}
+            </p>
 
-        {isLoading ? (
-            <div style={{ textAlign: "center", padding: "3rem", color: "#64748b" }}>
-                Loading daily chart...
-            </div>
-            ) : chartData.length > 0 ? (
-            <div style={{ width: "100%", height: 450, marginTop: "20px" }}>
-            <ResponsiveContainer width="100%" height="100%">
-                <LineChart
+            {isLoading ? (
+                <div style={{ textAlign: "center", padding: "3rem", color: "#64748b" }}>
+                    Loading daily chart...
+                </div>
+                ) : chartData.length > 0 ? (
+                <div style={{ width: "100%", height: 450, marginTop: "20px" }}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart
                         data={chartData}
                         margin={{ top: 20, right: 30, left: 10, bottom: 20 }}
-                >
+                   >
                     <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
               
                     <XAxis 
@@ -165,14 +165,14 @@ export function DailyView({ selectedDate }: DailyViewProps){
                         dot={{ r: 3 }}
                         activeDot={{ r: 6 }}
                     />
-                </LineChart>
-           </ResponsiveContainer>
-           </div>
-        ) : (
-            <div style={{ textAlign: "center", padding: "3rem", color: "#64748b" }}>
-                No data available for this date.
-            </div>
-        )}
-    </div>
-  );
+                  </LineChart>
+                </ResponsiveContainer>
+                </div>
+                ) : (
+                <div style={{ textAlign: "center", padding: "3rem", color: "#64748b" }}>
+                    No data available for this date.
+                </div>
+            )}
+        </div>
+    );
 }
