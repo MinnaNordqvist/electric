@@ -222,146 +222,146 @@ export function DataTable({selectedDate, onDateChange }: DataTableProps){
 
     return(
        
-      <div className="table-wrapper">
+        <div className="table-wrapper">
         
-        <div className="table-controls">
-            <button
-                className={`btn-filter-trigger ${hasActiveFilters ? "active" : ""}`}
-                onClick={() => setIsFilterOpen(true)}
-            >
-                🔍 {hasActiveFilters ? "Filters Applied" : "Filter Data"}
-            </button>
-        
-            {activeFilters.length > 0 && (
-                <div className="active-filters-bar">
-                    <span className="active-filters-label">Active:</span>
-                        {activeFilters.map(({ key, value }) => (
-                            <span key={key} className="filter-chip">
-                            <span className="filter-chip-key">{key}:</span> {value}
-                        <button
-                            type="button"
-                            className="btn-chip-remove"
-                            onClick={() => handleRemoveChip(key)}
-                        >
-                        &times;
-                        </button>
-                    </span>
-                        ))}
-                </div>
-            )}
-           {hasActiveFilters && (
-                <button className="btn-filter-trigger" onClick={handleClearAllFilters}>
-                    Clear Filters
-                </button>
-            )}
-       
-
-            <span className="record-count">
-                Showing {sortedData.length} of {data.length} records
-            </span>
-        </div>
-        <FilterDialog
-            isOpen={isFilterOpen}
-            onClose={() => setIsFilterOpen(false)}
-            activeFilters={filters}
-            data={data}
-            onApply={(newFilters, newActivePairs) => {
-                setFilters(newFilters);
-                setActiveFilters(newActivePairs);
-                onDateChange("");
-                setCurrentPage(1);
-            }}
-        />
-        <div className="filter-bar">
-            <label htmlFor="date-filter">Select Date:</label>
-                <input
-                    id="date-filter"
-                    type="date"
-                    className="date-picker-input"
-                    min={minDate}
-                    max={maxDate}
-                    value={selectedDate}
-                    onChange={(e) => onDateChange(e.target.value)}
-                />
-            {selectedDate && (
+            <div className="table-controls">
                 <button
-                    className="btn-filter-trigger"
-                    onClick={() => {
-                        onDateChange("");
-                        setCurrentPage(1);
-                    }}
+                    className={`btn-filter-trigger ${hasActiveFilters ? "active" : ""}`}
+                    onClick={() => setIsFilterOpen(true)}
                 >
-                    Clear Date
+                    🔍 {hasActiveFilters ? "Filters Applied" : "Filter Data"}
                 </button>
-            )}
-        </div>
-       <table className="dataTable">
-          <thead>
-            <tr>
-              <th className="sortable" onClick={() => handleSort("date")} >Date    {renderSortArrow("date")}</th>
-              <th className="sortable" onClick={() => handleSort("total_production")} >Total Production (MWh/h) {renderSortArrow("total_production")}</th>
-              <th className="sortable" onClick={() => handleSort("total_consumption")} >Total Consumption (kWh) {renderSortArrow("total_consumption")}</th>
-              <th className="sortable" onClick={() => handleSort("average_price")}>Avgerage Daily Price (snt/kWh) {renderSortArrow("average_price")}</th>
-              <th className="sortable" onClick={() => handleSort("longest_consecutive_negative_hours")}>Longest Negative Price Streak (h) {renderSortArrow("longest_consecutive_negative_hours")}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentTableData.map((row) => (
-             <tr key={row.date}>
-             <td>{row.date}</td>
-             <td>{Number(row.total_production).toLocaleString()}</td>
-             <td>{Number(row.total_consumption).toLocaleString()}</td>
-             <td>{Number(row.average_price)}</td>
-             <td>{Number(row.longest_consecutive_negative_hours)}</td>
-             </tr>   
-            ))}
-          </tbody>
-        </table>
         
-        <div className="pagination-container">
-            <button
-                className="btn-nav"
-                onClick={() => setCurrentPage(1)}
-                disabled={currentPage === 1}>
-                &laquo; First
-            </button>
-
-            <button 
-                className="btn-nav"
-                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                disabled={currentPage === 1}>
-                Prev
-            </button>   
+                {activeFilters.length > 0 && (
+                    <div className="active-filters-bar">
+                        <span className="active-filters-label">Active:</span>
+                            {activeFilters.map(({ key, value }) => (
+                                <span key={key} className="filter-chip">
+                                <span className="filter-chip-key">{key}:</span> {value}
+                            <button
+                                type="button"
+                                className="btn-chip-remove"
+                                onClick={() => handleRemoveChip(key)}
+                            >
+                            &times;
+                            </button>
+                        </span>
+                            ))}
+                    </div>
+                )}
+                {hasActiveFilters && (
+                    <button className="btn-filter-trigger" onClick={handleClearAllFilters}>
+                        Clear Filters
+                    </button>
+                )}
        
-            {startPage > 1 && <span className="pagination-ellipsis">...</span>}        
 
-            {pageNumbers.map((number) => (
-                <button
-                    key={number}
-                    onClick={() => setCurrentPage(number)}
-                    className={`btn-page ${number === currentPage ? "active" : ""}`}>
-                    {number}
-                </button>   
-            ))}  
-
-            {endPage < totalPages && <span className="pagination-ellipsis">...</span>}
-          
-            <button
-                className="btn-nav"
-                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-                disabled={currentPage === totalPages}>
-                Next 
-            </button>    
+                <span className="record-count">
+                    Showing {sortedData.length} of {data.length} records
+                </span>
+            </div>
+            <FilterDialog
+                isOpen={isFilterOpen}
+                onClose={() => setIsFilterOpen(false)}
+                activeFilters={filters}
+                data={data}
+                onApply={(newFilters, newActivePairs) => {
+                    setFilters(newFilters);
+                    setActiveFilters(newActivePairs);
+                    onDateChange("");
+                    setCurrentPage(1);
+                }}
+            />
+            <div className="filter-bar">
+                <label htmlFor="date-filter">Select Date:</label>
+                    <input
+                        id="date-filter"
+                        type="date"
+                        className="date-picker-input"
+                        min={minDate}
+                        max={maxDate}
+                        value={selectedDate}
+                        onChange={(e) => onDateChange(e.target.value)}
+                    />
+                {selectedDate && (
+                    <button
+                        className="btn-filter-trigger"
+                        onClick={() => {
+                            onDateChange("");
+                            setCurrentPage(1);
+                        }}
+                    >
+                        Clear Date
+                    </button>
+                )}
+            </div>
+            <table className="dataTable">
+                <thead>
+                 <tr>
+                    <th className="sortable" onClick={() => handleSort("date")} >Date    {renderSortArrow("date")}</th>
+                    <th className="sortable" onClick={() => handleSort("total_production")} >Total Production (MWh/h) {renderSortArrow("total_production")}</th>
+                    <th className="sortable" onClick={() => handleSort("total_consumption")} >Total Consumption (kWh) {renderSortArrow("total_consumption")}</th>
+                    <th className="sortable" onClick={() => handleSort("average_price")}>Avgerage Daily Price (snt/kWh) {renderSortArrow("average_price")}</th>
+                    <th className="sortable" onClick={() => handleSort("longest_consecutive_negative_hours")}>Longest Negative Price Streak (h) {renderSortArrow("longest_consecutive_negative_hours")}</th>
+                 </tr>
+                </thead>
+                <tbody>
+                    {currentTableData.map((row) => (
+                    <tr key={row.date}>
+                    <td>{row.date}</td>
+                    <td>{Number(row.total_production).toLocaleString()}</td>
+                    <td>{Number(row.total_consumption).toLocaleString()}</td>
+                    <td>{Number(row.average_price)}</td>
+                    <td>{Number(row.longest_consecutive_negative_hours)}</td>
+                    </tr>   
+                    ))}
+                </tbody>
+            </table>
         
-            <button
-                className="btn-nav"
-                onClick={() => setCurrentPage(totalPages)}
-                disabled={currentPage === totalPages}>
-                Last &raquo;
-            </button> 
-        </div>    
+            <div className="pagination-container">
+                <button
+                    className="btn-nav"
+                    onClick={() => setCurrentPage(1)}
+                    disabled={currentPage === 1}>
+                    &laquo; First
+                </button>
 
-      </div>
+                <button 
+                    className="btn-nav"
+                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                    disabled={currentPage === 1}>
+                    Prev
+                </button>   
+       
+                {startPage > 1 && <span className="pagination-ellipsis">...</span>}        
+
+                {pageNumbers.map((number) => (
+                    <button
+                        key={number}
+                        onClick={() => setCurrentPage(number)}
+                        className={`btn-page ${number === currentPage ? "active" : ""}`}>
+                        {number}
+                    </button>   
+                ))}  
+
+                {endPage < totalPages && <span className="pagination-ellipsis">...</span>}
+          
+                <button
+                    className="btn-nav"
+                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                    disabled={currentPage === totalPages}>
+                    Next 
+                </button>    
+        
+                <button
+                    className="btn-nav"
+                    onClick={() => setCurrentPage(totalPages)}
+                    disabled={currentPage === totalPages}>
+                    Last &raquo;
+                </button> 
+            </div>    
+
+        </div>
      
     )
 }

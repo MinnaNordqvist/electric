@@ -23,7 +23,8 @@ Find the hour with most electricity consumption compared to production, and the 
 
 ## Not done:
 ❌ Mobile optimization  
-❌ Dark theme
+❌ Dark theme  
+❌ Make it pretty
 
 
   
