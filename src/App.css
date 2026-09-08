@@ -47,6 +47,8 @@
   color: #334155;
   text-align: center;
   font-size: 0.875rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .dataTable td {

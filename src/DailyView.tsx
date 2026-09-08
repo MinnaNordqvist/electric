@@ -39,7 +39,7 @@ export function DailyView({ selectedDate }: DailyViewProps){
 
         if (row.starttime) {
             const d = new Date(row.starttime);
-            const hours = String(d.getHours()).padStart(2, "0");
+            const hours = String(d.getUTCHours()).padStart(2, "0");
             hourLabel = `${hours}:00`;
         }
 
