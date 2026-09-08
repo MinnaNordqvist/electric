@@ -11,12 +11,9 @@ More to come
 - Longest consecutive time in hours, when electricity price has been negative, per day
 
 ✅ Pagination  
-
 ✅ Ordering per column  
-
 ✅ Searching  
-
 ✅ Filtering  
-   
+
 
   
