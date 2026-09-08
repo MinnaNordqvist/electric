@@ -346,3 +346,11 @@
   box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
 }
 
+.record-count {
+  font-size: 0.875rem; 
+  color: #64748b; 
+  font-weight: 500;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  line-height: 1.4;
+}

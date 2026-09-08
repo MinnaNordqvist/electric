@@ -17,9 +17,11 @@ export function App() {
    <Dashboard />
 
     <section id="spacer"></section>
-    <div className="footer">
-      <p>Data source: Fingrid and porssisahko.net </p>
-    </div>
+    
+      <p className="record-count">
+        Data source: Fingrid and porssisahko.net 
+      </p>
+   
 
 
   </>
