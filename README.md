@@ -10,7 +10,13 @@ More to come
 - Average electricity price per day
 - Longest consecutive time in hours, when electricity price has been negative, per day
 
-✅ Pagination
-✅ Ordering per column
-Searching
-Filtering    
+✅ Pagination  
+
+✅ Ordering per column  
+
+✅ Searching  
+
+✅ Filtering  
+   
+
+  
