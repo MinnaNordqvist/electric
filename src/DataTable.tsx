@@ -59,33 +59,7 @@ export function DataTable({selectedDate, onDateChange }: DataTableProps){
         };
     }, [data]);
 
-    // Clean chip removal handler
-  const handleRemoveChip = (chipKey: string) => {
    
-    setActiveFilters((prev) => prev.filter((item) => item.key !== chipKey));
-
-    setFilters((prev) => {
-      const next = { ...prev };
-
-      
-      if (chipKey in next) {
-        delete next[chipKey as keyof FilterCriteria];
-        return next;
-      }
-
-     
-
-      return next;
-    });
-
-    setCurrentPage(1);
-  };
-  // Clear all filters handler
-  const handleClearAllFilters = () => {
-    setFilters({});
-    setActiveFilters([]);
-    setCurrentPage(1);
-  };
 
     // Filter dialog
     const filteredData = useMemo(() =>{
@@ -132,15 +106,41 @@ export function DataTable({selectedDate, onDateChange }: DataTableProps){
             return false;
         }
 
-      return true;
-    });
-  }, [data, filters]);
+        return true;
+      });
+    }, [data, filters]);
 
     const hasActiveFilters = Object.values(filters).some((val) => val !== "" && val !== undefined);
 
+    // Remove filter
+    const handleRemoveChip = (chipKey: string) => {
+        setActiveFilters((prev) => prev.filter((item) => item.key !== chipKey));
 
-    // Search Date
-      const dailyData = useMemo(() => {
+        setFilters((prev) => {
+            const next = { ...prev };
+
+            if (chipKey in next) {
+                delete next[chipKey as keyof FilterCriteria];
+                return next;
+            }
+
+            return next;
+        });
+
+        setCurrentPage(1);
+    };
+  
+    // Clear all filters
+   const handleClearAllFilters = () => {
+        setFilters({});
+        setActiveFilters([]);
+        setCurrentPage(1);
+    };
+
+
+
+    // Select Date for DailyView
+    const dailyData = useMemo(() => {
         if (!selectedDate) return filteredData;
         return filteredData.filter((row) => row.date === selectedDate);
     }, [filteredData, selectedDate]);
@@ -221,7 +221,7 @@ export function DataTable({selectedDate, onDateChange }: DataTableProps){
   
 
     return(
-        <>
+       
       <div className="table-wrapper">
         
         <div className="table-controls">
@@ -273,28 +273,28 @@ export function DataTable({selectedDate, onDateChange }: DataTableProps){
             }}
         />
         <div className="filter-bar">
-        <label htmlFor="date-filter">Select Date:</label>
-        <input
-          id="date-filter"
-          type="date"
-          className="date-picker-input"
-          min={minDate}
-          max={maxDate}
-          value={selectedDate}
-          onChange={(e) => onDateChange(e.target.value)}
-        />
-        {selectedDate && (
-          <button
-            className="btn-filter-trigger"
-            onClick={() => {
-              onDateChange("");
-              setCurrentPage(1);
-            }}
-          >
-            Clear Date
-          </button>
-        )}
-      </div>
+            <label htmlFor="date-filter">Select Date:</label>
+                <input
+                    id="date-filter"
+                    type="date"
+                    className="date-picker-input"
+                    min={minDate}
+                    max={maxDate}
+                    value={selectedDate}
+                    onChange={(e) => onDateChange(e.target.value)}
+                />
+            {selectedDate && (
+                <button
+                    className="btn-filter-trigger"
+                    onClick={() => {
+                        onDateChange("");
+                        setCurrentPage(1);
+                    }}
+                >
+                    Clear Date
+                </button>
+            )}
+        </div>
        <table className="dataTable">
           <thead>
             <tr>
@@ -362,6 +362,6 @@ export function DataTable({selectedDate, onDateChange }: DataTableProps){
         </div>    
 
       </div>
-        </>
+     
     )
 }
