@@ -1,6 +1,22 @@
-# electric
+# Electricity app
 Solita Academy Exercise
-More to come 
+
+## How to use:
+### Prerequisites
+- Docker Desktop (running)
+- Node.js 
+### Installation and Setup:
+1. Clone the repository  
+
+```
+git clone https://github.com/MinnaNordqvist/electric
+cd electric
+```
+
+2. Start Database and Docker
+`docker compose up -d --build` 
+
+
 
 
 ## Done:
@@ -19,6 +35,7 @@ More to come
 Select a date to see a graph visualisation by the hour.  
 **Consumption, production, price.**  
 Find the hour with most electricity consumption compared to production, and the cheapest electricity hours for the day at one glance.  
+✅ Running backend in Docker  
 
 
 ## Not done:
