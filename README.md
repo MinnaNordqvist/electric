@@ -2,7 +2,7 @@
 Solita Academy Exercise  
 
 ## About the app and the development process
-This app allows the user to use interactive data table and inspect single day view in graph.  
+This app allows the user to access interactive data table and single day graph view using the provided dataset.   
 The app was developed with AI assistance (Google Gemini). I don't typically use this much AI but I'm on a tight schedule.  
 
 
