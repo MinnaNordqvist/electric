@@ -12,6 +12,7 @@ Generative AI (Google Gemini 3.6 Flash and 3.1 Pro) was a collaborative partner 
 ### Architectural Decisions & Engineering Philosophy
 
 * **Lightweight & Low Tech Debt:** Avoided bloated scaffolding toolkits like `create-vite` or CRA in favor of a clean, minimal setup (`npm install vite`). Keeping dependencies strictly to what is necessary ensures a transparent, maintainable build pipeline.
+* **Zero UI Library Overhead:** Intentionally opted against heavy third-party UI packages for components like datepickers or data tables. Leveraged native browser elements (e.g., standard `<input type="date">`) and native HTML tables styled with lightweight CSS. This keeps bundle sizes minimal, prevents deep dependency vulnerabilities, and defers control rendering to the user's native browser engine.
 * **Strict Backend Query Footprint:** Designed the backend around **only two core SQL endpoints** (one for the daily aggregated table, one for the detailed single-day view). Fetching from the backend is kept to an absolute minimum to reduce database load.
 * **Client-Side Derived Metrics:** Analytics like the peak consumption-to-production hour ratio are calculated in memory on the frontend using data already fetched for the chart. Reusing existing payload state eliminates redundant HTTP requests and database round-trips.
 
