@@ -6,8 +6,8 @@ This app gives the user access to an interactive data table and single-day graph
 
 **AI disclosure**  
 The app was developed with AI assistance. 
-Generative AI (Google Gemini 3.6 Flash and 3.1 Pro) was a collaborative partner for technical troubleshooting and UI Styling + Layout.
-I don't typically use this much AI but I'm on a tight schedule.  
+Generative AI (Google Gemini 3.6 Flash and 3.1 Pro) was a collaborative partner for technical troubleshooting and UI Styling/Layout design.
+(I don't typically use this much AI but I was on a tight schedule.)  
 
 
 ### Done:
