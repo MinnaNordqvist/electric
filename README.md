@@ -9,7 +9,7 @@ The app was developed with AI assistance.
 Generative AI (Google Gemini 3.6 Flash and 3.1 Pro) was a collaborative partner for technical troubleshooting and UI Styling/Layout design.
 (I don't typically use this much AI but I was on a tight schedule.)  
 
-## Architectural Decisions & Engineering Philosophy
+### Architectural Decisions & Engineering Philosophy
 
 * **Lightweight & Low Tech Debt:** Avoided bloated scaffolding toolkits like `create-vite` or CRA in favor of a clean, minimal setup (`npm install vite`). Keeping dependencies strictly to what is necessary ensures a transparent, maintainable build pipeline.
 * **Strict Backend Query Footprint:** Designed the backend around **only two core SQL endpoints** (one for the daily aggregated table, one for the detailed single-day view). Fetching from the backend is kept to an absolute minimum to reduce database load.
