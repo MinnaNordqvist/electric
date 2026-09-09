@@ -26,7 +26,7 @@ Find the hour with most electricity consumption compared to production, and the 
 
 
 ### Not done:
-❌ Implement E2E tests
+❌ Implement E2E tests  
 ❌ Mobile optimization  
 ❌ Dark theme  
 ❌ Make it pretty
