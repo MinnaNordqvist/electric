@@ -314,8 +314,8 @@ export function DataTable({selectedDate, onDateChange }: DataTableProps){
                     <th className="sortable" onClick={() => handleSort("date")} >Date    {renderSortArrow("date")}</th>
                     <th className="sortable" onClick={() => handleSort("total_production")} >Total Production (MWh/h) {renderSortArrow("total_production")}</th>
                     <th className="sortable" onClick={() => handleSort("total_consumption")} >Total Consumption (kWh) {renderSortArrow("total_consumption")}</th>
-                    <th className="sortable" onClick={() => handleSort("average_price")}>Avgerage Daily Price (snt/kWh) {renderSortArrow("average_price")}</th>
-                    <th className="sortable" onClick={() => handleSort("longest_consecutive_negative_hours")}>Longest Negative Price Streak (h) {renderSortArrow("longest_consecutive_negative_hours")}</th>
+                    <th className="sortable" onClick={() => handleSort("average_price")}>Avg Daily Price (snt/kWh) {renderSortArrow("average_price")}</th>
+                    <th className="sortable" onClick={() => handleSort("longest_consecutive_negative_hours")}>Longest Neg Price Streak (h) {renderSortArrow("longest_consecutive_negative_hours")}</th>
                  </tr>
                 </thead>
                 <tbody>
