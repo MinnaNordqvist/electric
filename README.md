@@ -3,7 +3,8 @@ Solita Academy Exercise
 
 ## About the app and the development process
 This app allows the user to access interactive data table and single day graph view using the provided dataset.   
-The app was developed with AI assistance (Google Gemini). I don't typically use this much AI but I'm on a tight schedule.  
+The app was developed with AI assistance. Generative AI (Google Gemini 3.5 Flash and 3.1 Pro) was a collaborative partner for technical troubleshooting and UI Styling + Layout:
+I don't typically use this much AI but I'm on a tight schedule.  
 
 
 ### Done:
@@ -19,7 +20,7 @@ The app was developed with AI assistance (Google Gemini). I don't typically use 
 ✅ Filtering  
 
 ✅ Single Day View:  
-Select a date to see a graph visualisation by the hour.  
+Select a date to see a graph visualization by the hour.  
 **Consumption, production, price.**  
 Find the hour with most electricity consumption compared to production, and the cheapest electricity hours for the day at one glance.  
 ✅ Running backend in Docker  
