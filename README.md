@@ -43,11 +43,10 @@ git clone https://github.com/MinnaNordqvist/electric
 cd electric
 ```
 
-2. Create .env file from the template  
+2. Create .env file from the .env.example template  
 
 ```
-cp .env.example .env      # On Mac/Linux
-copy .env.example .env    # On Windows PowerShell
+cp .env.example .env   
 ```
 
 
@@ -63,7 +62,7 @@ docker compose up -d --build
 docker compose ps
 ```
 
-5. Install and run the frontend  
+5. Install the npm packages and run the frontend  
 
 ```
 npm install

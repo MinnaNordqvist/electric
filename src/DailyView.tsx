@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from "react"
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, darkTheme } from 'recharts';
 
 interface DailyViewProps {
   selectedDate: string;
@@ -9,7 +9,7 @@ interface DailyViewProps {
 export function DailyView({ selectedDate }: DailyViewProps){
     const [dailyRows, setDailyRows] = useState<any[]>([]);    
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    
+   
 
    // Fetch daily data 
    useEffect(() => {
@@ -31,6 +31,40 @@ export function DailyView({ selectedDate }: DailyViewProps){
         });
     }, [selectedDate]);
 
+
+    const renderPeakInfo = () => {
+        if (!dailyRows || dailyRows.length === 0) return null;
+
+        let maxRatio = -1;
+        let peakHour = "--:--";
+
+        dailyRows.forEach((row) => {
+            const cons = Number(row.consumptionamount) || 0;
+            const prod = Number(row.productionamount) || 0;
+            const ratio = prod > 0 ? cons / prod : 0;
+
+            if (ratio > maxRatio) {
+                maxRatio = ratio;
+                if (row.starttime) {
+                    const d = new Date(row.starttime);
+                    const hours = String(d.getUTCHours()).padStart(2, "0");
+                    peakHour = `${hours}:00`;
+                }
+            }
+        });
+
+        if (maxRatio <= 0) return (
+            <span className="peak-info">
+            Peak hour not available
+            </span>
+        );
+
+        return (
+            <span className="peak-info">
+             Peak: <strong>{peakHour}</strong> ({maxRatio.toFixed(2)})
+            </span>
+        );
+    };
 
    // Data for the chart 
    const chartData = useMemo(() => {
@@ -55,19 +89,23 @@ export function DailyView({ selectedDate }: DailyViewProps){
         });
     }, [dailyRows]);
 
+
+
     return (
         <div className="table-wrapper">
             <p className="record-count">
                 {selectedDate
-                    ? `Daily Overview for ${selectedDate} (${chartData.length} hours plotted)`
+                    ? `Daily Overview for ${selectedDate} (${chartData.length} hours plotted) `
                     : "Select a date above to display the daily chart."}
             </p>
-
+            {renderPeakInfo()}
+                    
             {isLoading ? (
                 <div style={{ textAlign: "center", padding: "3rem", color: "#64748b" }}>
                     Loading daily chart...
                 </div>
                 ) : chartData.length > 0 ? (
+                 
                 <div style={{ width: "100%", height: 450, marginTop: "20px" }}>
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart
