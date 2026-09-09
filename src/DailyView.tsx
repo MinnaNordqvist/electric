@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from "react"
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, darkTheme } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 interface DailyViewProps {
   selectedDate: string;
@@ -55,13 +55,13 @@ export function DailyView({ selectedDate }: DailyViewProps){
 
         if (maxRatio <= 0) return (
             <span className="peak-info">
-            Peak hour not available
+             Hour with most electricity consumption compared to production not available
             </span>
         );
 
         return (
             <span className="peak-info">
-             Peak: <strong>{peakHour}</strong> ({maxRatio.toFixed(2)})
+             Hour: <strong>{peakHour}</strong> with most electricity consumption compared to production <strong>{maxRatio.toFixed(2)}x</strong>
             </span>
         );
     };
