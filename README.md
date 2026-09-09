@@ -11,7 +11,7 @@ Generative AI (Google Gemini 3.6 Flash and 3.1 Pro) was a collaborative partner 
 
 
 
-### Features:
+## Features:
 ### Done:
 ✅ Daily Statistics table:
 - Total electricity consumption per day
