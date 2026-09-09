@@ -61,7 +61,7 @@ export function DailyView({ selectedDate }: DailyViewProps){
 
         return (
             <span className="peak-info">
-             Hour: <strong>{peakHour}</strong> with most electricity consumption compared to production <strong>{maxRatio.toFixed(2)}x</strong>
+             Hour: <strong>{peakHour}</strong> with most electricity consumption/production <strong>{maxRatio.toFixed(2)}x</strong>
             </span>
         );
     };
