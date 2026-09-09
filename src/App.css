@@ -399,3 +399,26 @@
   width: 100%;
 }
 
+.peak-info {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+ 
+  color: #64748b;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.35rem 0.75rem;
+  
+}
+
+.peak-info strong {
+  font-weight: 700;
+  color: #000;
+}
+
+.loading-chart {
+  text-align: center; 
+  padding: 3rem;
+  color: #64748b,
+}
+

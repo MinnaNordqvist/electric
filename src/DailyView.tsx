@@ -101,7 +101,7 @@ export function DailyView({ selectedDate }: DailyViewProps){
             {renderPeakInfo()}
                     
             {isLoading ? (
-                <div style={{ textAlign: "center", padding: "3rem", color: "#64748b" }}>
+                <div className="loading-chart" >
                     Loading daily chart...
                 </div>
                 ) : chartData.length > 0 ? (
