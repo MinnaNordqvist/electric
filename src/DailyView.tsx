@@ -12,24 +12,27 @@ export function DailyView({ selectedDate }: DailyViewProps){
    
 
    // Fetch daily data 
-   useEffect(() => {
-        if (!selectedDate) {
-            setDailyRows([]);
-            return;
-        }
+  useEffect(() => {
+  if (!selectedDate) {
+    setDailyRows([]);
+    return;
+  }
 
-        setIsLoading(true);
-        fetch(`/api/day?date=${selectedDate}`)
-        .then((res) => res.json())
-        .then((resData) => {
-            setDailyRows(resData);
-            setIsLoading(false);
-        })
-        .catch((err) => {
-            console.error("Error fetching daily stats:", err);
-            setIsLoading(false);
-        });
-    }, [selectedDate]);
+  setIsLoading(true);
+  const safeDate = encodeURIComponent(selectedDate.trim());
+  
+  fetch(`/api/day?date=${safeDate}`)
+    .then((res) => (res.ok ? res.json() : []))
+    .then((resData) => {
+      setDailyRows(Array.isArray(resData) ? resData : []);
+      setIsLoading(false);
+    })
+    .catch((err) => {
+      console.error("Fetch error:", err);
+      setDailyRows([]);
+      setIsLoading(false);
+    });
+}, [selectedDate]);
 
 
     const renderPeakInfo = () => {

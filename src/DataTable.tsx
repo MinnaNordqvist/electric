@@ -42,7 +42,7 @@ export function DataTable({selectedDate, onDateChange }: DataTableProps){
             return res.json();
         })
         .then((resData) => {
-            console.log('API Data received:', resData);
+            //console.log('API Data received:', resData);
       
      
             if (Array.isArray(resData)) {

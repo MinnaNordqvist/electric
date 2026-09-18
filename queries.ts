@@ -60,12 +60,16 @@ export async function selectSpecial(){
 
 
 export async function searchDay(date: string) {
-   let searchTerm = date.toString();
-    
-   const query = `SELECT date::text AS date, starttime, productionamount, consumptionamount, hourlyprice FROM electricitydata WHERE date = '${searchTerm}'` 
-     try {
+    const searchTerm = date.toString()
+  
+    const query = {
+      name: 'Search date',
+      text: 'SELECT date::text AS date, starttime, productionamount, consumptionamount, hourlyprice FROM electricitydata WHERE date::text = $1',
+      values: [searchTerm],
+    }
+    try {
       const result = await pool.query(query);
-     // console.log(result.rows);
+      console.log(result.rows);
       return result.rows;
     } catch (error) {
       console.error('Error executing query:', error);
